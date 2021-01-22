@@ -2,8 +2,6 @@
 >
 > - Alonzo Church (1941), [The Calculi of Lambda Conversion](http://www.cap-lore.com/Languages/lambda/math/Alonzo/book.html)
 
-# Computer Calculus Reading Group
-
 Calculus is a broad subject with a number of useful applications in both classical and statistical computing. Each week, we will read one or two related papers and hold a short discussion. All are welcome to attend.
 
 ## Schedule

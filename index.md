@@ -4,7 +4,7 @@
 
 # Computer Calculus Reading Group
 
-Calculus is a broad subject with a number of applications in both classical and statistical computing. Each week, we will read one or two related papers and hold a short discussion. All are welcome to attend.
+Calculus is a broad subject with a number of useful applications in both classical and statistical computing. Each week, we will read one or two related papers and hold a short discussion. All are welcome to attend.
 
 ## Schedule
 
@@ -14,7 +14,7 @@ Calculus is a broad subject with a number of applications in both classical and 
 |-----------------|-------------------|---------------------|
 | Feb. 5, 9:30 am | AD in PyTorch     | Breandan Considine  |
 
-If you would like to sign up to present or would like to receive an invitation to join the reading group, please reach out to the organizer by electronic mail using the address bre at ndan dot co.
+If you would like to sign up to present or wish to receive an invitation to join the reading group, please reach out to the organizer by electronic mail using the following address: bre at ndan dot co.
 
 ## Reading Materials
 
@@ -22,23 +22,20 @@ A few recent papers on differential, integral and logical calculi, following the
 
 ### Differential
 
-Differentiable programming concerns the calculus of infinitesimal change and change propagation through a computation graph. This is the primary focus of this reading group.
+Differentiable programming concerns the calculus of infinitesimal change and change propagation through a computation graph. This subject is the original and primary focus of this reading group.
 
-#### Papers
-
-* [λ<sub>S</sub>: Computable semantics for differentiable programming with higher-order functions and datatypes](https://arxiv.org/pdf/2007.08017.pdf), Sherman et al. (2020)
 * [PyTorch: An Imperative Style, High-Performance Deep Learning Library](https://papers.nips.cc/paper/2019/file/bdbca288fee7f92f2bfa9f7012727740-Paper.pdf), Paszke et al. (2019)
+* [λ<sub>S</sub>: Computable semantics for differentiable programming](https://arxiv.org/pdf/2007.08017.pdf), Sherman et al. (2020)
+* [Instead of Rewriting Foreign Code for Machine Learning, Automatically Synthesize Fast Gradients](https://arxiv.org/pdf/2010.01709.pdf), Moses and Churavy (2020)
 * [Differentiable Weighted Finite-State Transducers](https://arxiv.org/pdf/2010.01003.pdf), Hannun et al. (2020)
 * [Differentiate Everything with a Reversible Domain-Specific Language](https://arxiv.org/pdf/2003.04617.pdf), Liu and Zhao (2020)
-* [Instead of Rewriting Foreign Code for Machine Learning, Automatically Synthesize Fast Gradients](https://arxiv.org/pdf/2010.01709.pdf), Moses and Churavy (2020)
 * [The Simple Essence of Automatic Differentiation](https://arxiv.org/pdf/1804.00746.pdf), Elliott (2018)
+* [Automatic differentiation in ML: Where we are and where we should be going](https://arxiv.org/pdf/1810.11530.pdf), Merriënboer et al. (2018)
 * [Automatic differentiation in machine learning: a survey](https://www.jmlr.org/papers/volume18/17-468/17-468.pdf), Baydin et al. (2017)
 
 ### Integral
 
 We will also discuss some topics in automatic integration or probabilistic programming, i.e. the study of volume, density and how to derive their exact or approximate quantity.
-
-#### Papers
 
 * [Quantitative Equational Reasoning](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/4B76BCCD4D6A3A37459C35ED2CE5FF93/9781108488518c10_333-360.pdf/quantitative_equational_reasoning.pdf), Bacci, Mardare, Panangaden, and Plotkin (2020)
 * [miniKanren as a Tool for Symbolic Computation in Python](https://arxiv.org/pdf/2005.11644.pdf), Willard (2020)

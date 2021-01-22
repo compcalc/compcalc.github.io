@@ -2,7 +2,7 @@
 >
 > - Alonzo Church (1941), [The Calculi of Lambda Conversion](http://www.cap-lore.com/Languages/lambda/math/Alonzo/book.html)
 
-Calculus is a broad subject with a variety of applications in classical and statistical computing. Broadly, it encompasses any formal system manipulates symbolic expressions according to a fixed set of rules. We are specifically interested in its applications to programming. Each week, we will read one or two related papers and hold a short discussion. All are welcome to attend.
+Calculus is a broad subject with a variety of applications in classical and statistical computing. Broadly, it encompasses any formal system for manipulating symbolic expressions according to a fixed set of rules. We are specifically interested in its applications to programming. Each week, we will read one or two related papers and hold a short discussion. All are welcome to attend.
 
 ## Schedule
 

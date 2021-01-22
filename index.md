@@ -2,7 +2,7 @@
 >
 > - Alonzo Church (1941), [The Calculi of Lambda Conversion](http://www.cap-lore.com/Languages/lambda/math/Alonzo/book.html)
 
-Calculus is a broad subject with a number of useful applications in both classical and statistical computing. Each week, we will read one or two related papers and hold a short discussion. All are welcome to attend.
+Calculus is a broad subject with a variety of applications in classical and statistical computing. Broadly, it encompasses any formal system manipulates symbolic expressions according to a fixed set of rules. We are specifically interested in its applications to programming. Each week, we will read one or two related papers and hold a short discussion. All are welcome to attend.
 
 ## Schedule
 
@@ -16,7 +16,7 @@ If you would like to sign up to present or wish to receive an invitation to join
 
 ## Reading Materials
 
-A few recent papers on differential, integral and logical calculi, following the general theme of topics which we may discuss. Please feel free to suggest a related paper to present!
+A few recent papers on differential, integral and logical calculi are listed for illustrative purposes below, following the general theme of topics we plan to discuss. Other suggested reading materials are also welcome!
 
 ### Differential
 

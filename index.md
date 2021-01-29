@@ -8,9 +8,12 @@ Calculus is a broad subject with a variety of applications in classical and stat
 
 ### Winter/Spring 2021
 
-| Date            | Talk              | Presenter           |
-|-----------------|-------------------|---------------------|
-| Feb. 5, 9:30 am | AD in PyTorch     | Breandan Considine  |
+| Date              | Talk                                 | Presenter          |
+|:------------------|:-------------------------------------|:-------------------|
+| Feb. 5, 9:30 am   | Automatic Differentiation in PyTorch | Breandan Considine |
+| Feb. 12, 1:00 pm  | Programming with Probabilities       | Breandan Considine |
+| Feb. 19, 1:00 pm  | Introduction to Sequent Calculus     | Breandan Considine |
+| Feb. 26, 10:00 am | Quantitative Equational Reasoning    | Prakash Panangaden |
 
 If you would like to sign up to present or wish to receive an invitation to join the reading group, please reach out to the organizer by electronic mail using the following address: bre at ndan dot co.
 

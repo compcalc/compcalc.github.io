@@ -2,8 +2,15 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
-\usepackage{color}
 \usepackage{listings}
+
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{tikz-3dplot}
+\usetikzlibrary{3d}
+\usetikzlibrary{decorations.pathreplacing,calligraphy}
+\newif\ifshowcellnumber
+\showcellnumbertrue
 
 \lstset{basicstyle=\ttfamily,breaklines=true}
 \usepackage{fontspec}
@@ -13,6 +20,7 @@
 \setmonofont{JetBrains Mono}[Contextuals=Alternate]
 
 \usepackage{amsmath}
+\usepackage{namedtensor}
 \usepackage{amsfonts}
 \usepackage{adjustbox}
 \usepackage{unicode-math}
@@ -33,7 +41,7 @@
             D(f + g) &= D(f) + D(g) \\
             D(f \cdot g) &= D(f) \cdot g + f \cdot D(g)
         \end{align*}
-        We can think of AD as a \textit{linear map} between functions.
+        We can think of AD as a \textit{linear map} between function spaces.
 
         \begin{align*}
             D(f + g) &= D(f) + D(g) \\
@@ -72,6 +80,30 @@
     \end{frame}
 
     \begin{frame}[fragile]
+        \frametitle{Gradients in PyTorch}
+
+        Suppose we have a scalar-valued vector function, $f: \mathbb{R}^{n}\times\mathbb{R}^{n}\rightarrow\mathbb{R}$:
+
+        \noindent\rule{\textwidth}{0.5pt}
+
+        \begin{lstlisting}[language=Python]
+x = torch.randn(2, requires_grad=True)
+t = torch.tensor([2., 3.], requires_grad=True)
+y = torch.randn(2)
+f = sum((x*t - y)**2)**0.5
+
+torch.autograd.grad(f, inputs=[x, t])
+        \end{lstlisting}
+
+        \noindent\rule{\textwidth}{0.5pt}
+        \begin{lstlisting}
+
+(tensor([-0.60,  2.85]), tensor([0.23, 1.47]))
+        \end{lstlisting}
+
+    \end{frame}
+
+    \begin{frame}[fragile]
         \frametitle{Jacobians in PyTorch}
         \begin{lstlisting}[language=Python]
 def jacobian(fun, x) -> torch.Tensor:
@@ -95,15 +127,17 @@ jacobian(f, torch.ones(3))
 
         Suppose we have a function $P(X) = p_k \circ p_{k-1} \circ \cdots \circ p_1 \circ X$. The derivative of a linear composition can be expressed as a product:
 
-        \begin{equation*} \label{eq:sfun_chain_rule}
-        \frac{dP}{dp_1} = \frac{dp_k}{dp_{k-1}}\frac{dp_{k-1}}{dp_{k-2}}\dots\frac{dp_2}{dp_1}= {\displaystyle \prod_{i=1}^{k-1} \frac{dp_{i+1}}{dp_{i}}}
+        \begin{equation*}
+            \label{eq:sfun_chain_rule}
+            \frac{dP}{dp_1} = \frac{dp_k}{dp_{k-1}}\frac{dp_{k-1}}{dp_{k-2}}\dots\frac{dp_2}{dp_1}= {\displaystyle \prod_{i=1}^{k-1} \frac{dp_{i+1}}{dp_{i}}}
         \end{equation*}
 
         This also holds in higher dimensions, for example $\mathbf{P}_k: \mathbb{R}^m\rightarrow\mathbb{R}^n$:
 
-        \begin{align*} \label{eq:vfun_chain_rule}
-        \mathcal{J} \mathbf{P_k} = \displaystyle \prod_{i=1}^{k} \mathcal{J}p_i &= \underbrace{\bigg(\Big((\mathcal{J}p_k \mathcal{J}p_{k-1}) \dots \mathcal{J}p_2\Big) \mathcal{J}p_1\bigg)}_{\textit{Reverse mode, VJP, Pullback}} \\
-        &= \underbrace{\bigg(\mathcal{J}p_k \Big(\mathcal{J}p_{k-1} \dots (\mathcal{J}p_2 \mathcal{J}p_1)\Big)\bigg)}_{\textit{Forward mode, JVP, Pushforward}}
+        \begin{align*}
+            \label{eq:vfun_chain_rule}
+            \mathcal{J} \mathbf{P_k} = \displaystyle \prod_{i=1}^{k} \mathcal{J}p_i &= \underbrace{\bigg(\Big((\mathcal{J}p_k \mathcal{J}p_{k-1}) \dots \mathcal{J}p_2\Big) \mathcal{J}p_1\bigg)}_{\textit{Reverse mode, VJP, Pullback}} \\
+            &= \underbrace{\bigg(\mathcal{J}p_k \Big(\mathcal{J}p_{k-1} \dots (\mathcal{J}p_2 \mathcal{J}p_1)\Big)\bigg)}_{\textit{Forward mode, JVP, Pushforward}}
         \end{align*}
     \end{frame}
 
@@ -113,7 +147,9 @@ jacobian(f, torch.ones(3))
         The \textit{Hessian} $\mathbf{H}:(\mathbb{R}^m\rightarrow\mathbb{R})\rightarrow\mathbb{R}^{m\times m}$ maps scalar functions to $\partial^2$:
 
         \begin{equation*}
-            \mathbf{H}(Q) = \begin{bmatrix}{\dfrac {\partial ^{2}Q}{\partial x_{1}^{2}}}&{\dfrac {\partial ^{2}Q}{\partial x_{1}\,\partial x_{2}}}&\cdots &{\dfrac {\partial ^{2}Q}{\partial x_{1}\,\partial x_{m}}}\\[2.2ex]{\dfrac {\partial ^{2}Q}{\partial x_{2}\,\partial x_{1}}}&{\dfrac {\partial ^{2}Q}{\partial x_{2}^{2}}}&\cdots &{\dfrac {\partial ^{2}Q}{\partial x_{2}\,\partial x_{m}}}\\[2.2ex]\vdots &\vdots &\ddots &\vdots \\[2.2ex]{\dfrac {\partial ^{2}Q}{\partial x_{m}\,\partial x_{1}}}&{\dfrac {\partial ^{2}Q}{\partial x_{m}\,\partial x_{2}}}&\cdots &{\dfrac {\partial ^{2}Q}{\partial x_{m}^{2}}}\end{bmatrix}
+            \mathbf{H}(Q) = \begin{bmatrix}{\dfrac {\partial ^{2}Q}{\partial x_{1}^{2}}}
+                                &{\dfrac {\partial ^{2}Q}{\partial x_{1}\,\partial x_{2}}}&\cdots &{\dfrac {\partial ^{2}Q}{\partial x_{1}\,\partial x_{m}}}\\[2.2ex]{\dfrac {\partial ^{2}Q}{\partial x_{2}\,\partial x_{1}}}&{\dfrac {\partial ^{2}Q}{\partial x_{2}^{2}}}&\cdots &{\dfrac {\partial ^{2}Q}{\partial x_{2}\,\partial x_{m}}}\\[2.2ex]\vdots &\vdots &\ddots &\vdots \\[2.2ex]{\dfrac {\partial ^{2}Q}{\partial x_{m}\,\partial x_{1}}}&{\dfrac {\partial ^{2}Q}{\partial x_{m}\,\partial x_{2}}}&\cdots &{\dfrac {\partial ^{2}Q}{\partial x_{m}^{2}}}
+            \end{bmatrix}
         \end{equation*}
 
         The Hessian and Jacobian are related by $\mathbf{H}(Q)^\intercal = \mathcal{J} \circ \nabla Q$.
@@ -141,7 +177,7 @@ hessian(g, torch.ones(3))
             \begin{tabular}{lll}
                 \textbf{Program} & & \textbf{Computation Graph} \\\\
 %            \begin{tabular}[c]{@{}l@{}} $\hat y = θx + b$\\ $l = ||\hat y - y||_2$\end{tabular} &
-                    \begin{lstlisting}[basicstyle=\ttfamily\footnotesize, language=Python]
+                \begin{lstlisting}[basicstyle=\ttfamily\footnotesize, language=Python]
 sum = 0
 l = [0, 0, 0, 0]
 for i in range(0, 4):
@@ -153,135 +189,136 @@ for i in range(0, 4):
 for i in range(0, 4):
   sum += l[i]
 l = sqrt(sum)
-                    \end{lstlisting} & &
+                \end{lstlisting}                            & &
                 \begin{adjustbox}{minipage={.4\textwidth}, height=0.22\textwidth, margin*=0cm 0cm 0cm 0.1cm}
-                      \digraph[scale=0.1]{prograph}{
-                          node[ fontname="Helvetica" fontsize=20 shape=Mrecord ];
-                          edge[ fontname="Helvetica" fontsize=18 ];
+                    \digraph[scale=0.1]{prograph}{
+                        node[ fontname="Helvetica" fontsize=20 shape=Mrecord ];
+                        edge[ fontname="Helvetica" fontsize=18 ];
 
-                          graph ["concentrate"="true","rankdir"="LR","bgcolor"="transparent","margin"="0.0","compound"="true","nslimit"="20"]
-                          "eeba8" ["label"="+"]
-                          "a8416" ["label"="+"]
-                          "4500f" ["label"="pow"]
-                          "a67f9" ["label"="*"]
-                          "0.5" ["label"="0.5"]
-                          "f14a3" ["label"="*"]
-                          "9c49d" ["label"="*"]
-                          "59c48" ["label"="+"]
-                          "980bd" ["label"="+"]
-                          "8f532" ["label"="+"]
-                          "1a609" ["label"="+"]
-                          "e58c4" ["label"="+"]
-                          "23f5b" ["label"="+"]
-                          "d829b" ["label"="+"]
-                          "y₀" ["label"="y₀"]
-                          "2783d" ["label"="+"]
-                          "8bd47" ["label"="+"]
-                          "y₂" ["label"="y₂"]
-                          "517e6" ["label"="+"]
-                          "8caa0" ["label"="+"]
-                          "y₁" ["label"="y₁"]
-                          "7da0d" ["label"="+"]
-                          "b12cb" ["label"="+"]
-                          "b" ["label"="b"]
-                          "f8941" ["label"="+"]
-                          "3eecd" ["label"="+"]
-                          "2e83a" ["label"="+"]
-                          "b59fd" ["label"="+"]
-                          "dae83" ["label"="+"]
-                          "b11ba" ["label"="*"]
-                          "3bb89" ["label"="*"]
-                          "b2454" ["label"="*"]
-                          "7bed4" ["label"="*"]
-                          "39644" ["label"="*"]
-                          "12c32" ["label"="*"]
-                          "d58d1" ["label"="*"]
-                          "6c64d" ["label"="*"]
-                          "fb0f0" ["label"="*"]
-                          "6c2be" ["label"="*"]
-                          "57fd4" ["label"="*"]
-                          "a9bc3" ["label"="*"]
-                          "x₀" ["label"="x₀"]
-                          "θ₀" ["label"="θ₀"]
-                          "x₂" ["label"="x₂"]
-                          "θ₁" ["label"="θ₁"]
-                          "x₂" ["label"="x₂"]
-                          "x₄" ["label"="x₄"]
-                          "x₁" ["label"="x₁"]
-                          "x₃" ["label"="x₃"]
-                          "eeba8" -> "a8416"
-                          "a8416" -> "4500f"
-                          "a67f9" -> "a8416"
-                          "0.5" -> "4500f"
-                          "f14a3" -> "eeba8"
-                          "9c49d" -> "eeba8"
-                          "59c48" -> "a67f9"
-                          "980bd" -> "a67f9"
-                          "8f532" -> "f14a3"
-                          "1a609" -> "f14a3"
-                          "e58c4" -> "9c49d"
-                          "23f5b" -> "9c49d"
-                          "d829b" -> "59c48"
-                          "y₀" -> "59c48"
-                          "y₀" -> "980bd"
-                          "2783d" -> "980bd"
-                          "8bd47" -> "8f532"
-                          "y₂" -> "8f532"
-                          "y₂" -> "1a609"
-                          "517e6" -> "1a609"
-                          "8caa0" -> "e58c4"
-                          "y₁" -> "e58c4"
-                          "y₁" -> "23f5b"
-                          "7da0d" -> "23f5b"
-                          "b12cb" -> "d829b"
-                          "b" -> "d829b"
-                          "b" -> "2783d"
-                          "b" -> "8bd47"
-                          "b" -> "517e6"
-                          "b" -> "8caa0"
-                          "b" -> "7da0d"
-                          "f8941" -> "2783d"
-                          "3eecd" -> "8bd47"
-                          "2e83a" -> "517e6"
-                          "b59fd" -> "8caa0"
-                          "dae83" -> "7da0d"
-                          "b11ba" -> "b12cb"
-                          "3bb89" -> "b12cb"
-                          "b2454" -> "f8941"
-                          "7bed4" -> "f8941"
-                          "39644" -> "3eecd"
-                          "12c32" -> "3eecd"
-                          "d58d1" -> "2e83a"
-                          "6c64d" -> "2e83a"
-                          "fb0f0" -> "b59fd"
-                          "6c2be" -> "b59fd"
-                          "57fd4" -> "dae83"
-                          "a9bc3" -> "dae83"
-                          "x₀" -> "b11ba"
-                          "x₀" -> "b2454"
-                          "θ₀" -> "b11ba"
-                          "θ₀" -> "b2454"
-                          "θ₀" -> "39644"
-                          "θ₀" -> "d58d1"
-                          "θ₀" -> "fb0f0"
-                          "θ₀" -> "57fd4"
-                          "x₂" -> "3bb89"
-                          "x₂" -> "7bed4"
-                          "θ₁" -> "3bb89"
-                          "θ₁" -> "7bed4"
-                          "θ₁" -> "12c32"
-                          "θ₁" -> "6c64d"
-                          "θ₁" -> "6c2be"
-                          "θ₁" -> "a9bc3"
-                          "x₂" -> "39644"
-                          "x₂" -> "d58d1"
-                          "x₄" -> "12c32"
-                          "x₄" -> "6c64d"
-                          "x₁" -> "fb0f0"
-                          "x₁" -> "57fd4"
-                          "x₃" -> "6c2be"
-                          "x₃" -> "a9bc3"
-                      } \end{adjustbox}
+                        graph ["concentrate"="true","rankdir"="LR","bgcolor"="transparent","margin"="0.0","compound"="true","nslimit"="20"]
+                        "eeba8" ["label"="+"]
+                        "a8416" ["label"="+"]
+                        "4500f" ["label"="pow"]
+                        "a67f9" ["label"="*"]
+                        "0.5" ["label"="0.5"]
+                        "f14a3" ["label"="*"]
+                        "9c49d" ["label"="*"]
+                        "59c48" ["label"="+"]
+                        "980bd" ["label"="+"]
+                        "8f532" ["label"="+"]
+                        "1a609" ["label"="+"]
+                        "e58c4" ["label"="+"]
+                        "23f5b" ["label"="+"]
+                        "d829b" ["label"="+"]
+                        "y₀" ["label"="y₀"]
+                        "2783d" ["label"="+"]
+                        "8bd47" ["label"="+"]
+                        "y₂" ["label"="y₂"]
+                        "517e6" ["label"="+"]
+                        "8caa0" ["label"="+"]
+                        "y₁" ["label"="y₁"]
+                        "7da0d" ["label"="+"]
+                        "b12cb" ["label"="+"]
+                        "b" ["label"="b"]
+                        "f8941" ["label"="+"]
+                        "3eecd" ["label"="+"]
+                        "2e83a" ["label"="+"]
+                        "b59fd" ["label"="+"]
+                        "dae83" ["label"="+"]
+                        "b11ba" ["label"="*"]
+                        "3bb89" ["label"="*"]
+                        "b2454" ["label"="*"]
+                        "7bed4" ["label"="*"]
+                        "39644" ["label"="*"]
+                        "12c32" ["label"="*"]
+                        "d58d1" ["label"="*"]
+                        "6c64d" ["label"="*"]
+                        "fb0f0" ["label"="*"]
+                        "6c2be" ["label"="*"]
+                        "57fd4" ["label"="*"]
+                        "a9bc3" ["label"="*"]
+                        "x₀" ["label"="x₀"]
+                        "θ₀" ["label"="θ₀"]
+                        "x₂" ["label"="x₂"]
+                        "θ₁" ["label"="θ₁"]
+                        "x₂" ["label"="x₂"]
+                        "x₄" ["label"="x₄"]
+                        "x₁" ["label"="x₁"]
+                        "x₃" ["label"="x₃"]
+                        "eeba8" -> "a8416"
+                        "a8416" -> "4500f"
+                        "a67f9" -> "a8416"
+                        "0.5" -> "4500f"
+                        "f14a3" -> "eeba8"
+                        "9c49d" -> "eeba8"
+                        "59c48" -> "a67f9"
+                        "980bd" -> "a67f9"
+                        "8f532" -> "f14a3"
+                        "1a609" -> "f14a3"
+                        "e58c4" -> "9c49d"
+                        "23f5b" -> "9c49d"
+                        "d829b" -> "59c48"
+                        "y₀" -> "59c48"
+                        "y₀" -> "980bd"
+                        "2783d" -> "980bd"
+                        "8bd47" -> "8f532"
+                        "y₂" -> "8f532"
+                        "y₂" -> "1a609"
+                        "517e6" -> "1a609"
+                        "8caa0" -> "e58c4"
+                        "y₁" -> "e58c4"
+                        "y₁" -> "23f5b"
+                        "7da0d" -> "23f5b"
+                        "b12cb" -> "d829b"
+                        "b" -> "d829b"
+                        "b" -> "2783d"
+                        "b" -> "8bd47"
+                        "b" -> "517e6"
+                        "b" -> "8caa0"
+                        "b" -> "7da0d"
+                        "f8941" -> "2783d"
+                        "3eecd" -> "8bd47"
+                        "2e83a" -> "517e6"
+                        "b59fd" -> "8caa0"
+                        "dae83" -> "7da0d"
+                        "b11ba" -> "b12cb"
+                        "3bb89" -> "b12cb"
+                        "b2454" -> "f8941"
+                        "7bed4" -> "f8941"
+                        "39644" -> "3eecd"
+                        "12c32" -> "3eecd"
+                        "d58d1" -> "2e83a"
+                        "6c64d" -> "2e83a"
+                        "fb0f0" -> "b59fd"
+                        "6c2be" -> "b59fd"
+                        "57fd4" -> "dae83"
+                        "a9bc3" -> "dae83"
+                        "x₀" -> "b11ba"
+                        "x₀" -> "b2454"
+                        "θ₀" -> "b11ba"
+                        "θ₀" -> "b2454"
+                        "θ₀" -> "39644"
+                        "θ₀" -> "d58d1"
+                        "θ₀" -> "fb0f0"
+                        "θ₀" -> "57fd4"
+                        "x₂" -> "3bb89"
+                        "x₂" -> "7bed4"
+                        "θ₁" -> "3bb89"
+                        "θ₁" -> "7bed4"
+                        "θ₁" -> "12c32"
+                        "θ₁" -> "6c64d"
+                        "θ₁" -> "6c2be"
+                        "θ₁" -> "a9bc3"
+                        "x₂" -> "39644"
+                        "x₂" -> "d58d1"
+                        "x₄" -> "12c32"
+                        "x₄" -> "6c64d"
+                        "x₁" -> "fb0f0"
+                        "x₁" -> "57fd4"
+                        "x₃" -> "6c2be"
+                        "x₃" -> "a9bc3"
+                    }
+                \end{adjustbox}
             \end{tabular}
         \end{table}
     \end{frame}
@@ -301,6 +338,161 @@ l = sqrt(sum)
 %        \item Implicit vs.
 %      \end{enumerate}
 %    \end{frame}
+
+    \begin{frame}
+        \frametitle{What is a tensor?}
+
+        \definecolor{R}{RGB}{202,65,55}
+        \definecolor{G}{RGB}{151,216,56}
+        \definecolor{B}{RGB}{0,0,0}
+        \definecolor{W}{RGB}{255,255,255}
+        \definecolor{X}{RGB}{65,65,65}
+
+        \newcommand{\TikZRubikFaceLeft}[9]{\def\myarrayL{#1,#2,#3,#4,#5,#6,#7,#8,#9}}
+        \newcommand{\TikZRubikFaceRight}[9]{\def\myarrayR{#1,#2,#3,#4,#5,#6,#7,#8,#9}}
+        \newcommand{\TikZRubikFaceTop}[9]{\def\myarrayT{#1,#2,#3,#4,#5,#6,#7,#8,#9}}
+        \newcommand{\BuildArray}{\foreach \X [count=\Y] in \myarrayL%
+        {\ifnum\Y=1%
+        \xdef\myarray{"\X"}%
+        \else%
+        \xdef\myarray{\myarray,"\X"}%
+        \fi}%
+        \foreach \X in \myarrayR%
+        {\xdef\myarray{\myarray,"\X"}}%
+        \foreach \X in \myarrayT%
+        {\xdef\myarray{\myarray,"\X"}}%
+        \xdef\myarray{{\myarray}}%
+        }
+        \TikZRubikFaceLeft
+        {X}{W}{W}
+        {W}{X}{X}
+        {X}{W}{W}
+        \TikZRubikFaceRight
+        {W}{X}{W}
+        {X}{W}{X}
+        {W}{X}{W}
+        \TikZRubikFaceTop
+        {X}{W}{X}
+        {W}{W}{X}
+        {W}{X}{W}
+        \BuildArray
+        \pgfmathsetmacro\radius{0.1}
+        \tdplotsetmaincoords{55}{135}
+
+        \showcellnumberfalse
+
+        \bgroup
+        \def\arraystretch{1.2}
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{cc}
+                \textbf{Rank-2} & \textbf{Rank-3} \\\\
+                \begin{adjustbox}{minipage={.49\textwidth}, margin*=-0.5cm 0cm -0.5cm 0cm}
+                    \begin{equation*}
+                        \begin{bmatrix}{1}
+                            &{0}&\cdots &{1}\\{0}&{1}&\cdots &{0}\\\vdots &\vdots &\ddots &\vdots \\{1}&{0}&\cdots &{1}
+                        \end{bmatrix}
+                    \end{equation*}
+                \end{adjustbox} &
+                \begin{adjustbox}{minipage={.48\textwidth}}
+                    \begin{tikzpicture}
+                        \clip (-3,-2.5) rectangle (3,2.5);
+                        \begin{scope}[tdplot_main_coords]
+                            \filldraw [canvas is yz plane at x=1.5] (-1.5,-1.5) rectangle (1.5,1.5);
+                            \filldraw [canvas is xz plane at y=1.5] (-1.5,-1.5) rectangle (1.5,1.5);
+                            \filldraw [canvas is yx plane at z=1.5] (-1.5,-1.5) rectangle (1.5,1.5);
+                            \foreach \X [count=\XX starting from 0] in {-1.5,-0.5,0.5}{
+                                \foreach \Y [count=\YY starting from 0] in {-1.5,-0.5,0.5}{
+                                    \pgfmathtruncatemacro{\Z}{\XX+3*(2-\YY)}
+                                    \pgfmathsetmacro{\mycolor}{\myarray[\Z]}
+                                    \draw [thick,canvas is yz plane at x=1.5,shift={(\X,\Y)},fill=\mycolor] (0.5,0) -- ({1-\radius},0) arc (-90:0:\radius) -- (1,{1-\radius}) arc (0:90:\radius) -- (\radius,1) arc (90:180:\radius) -- (0,\radius) arc (180:270:\radius) -- cycle;
+                                    \ifshowcellnumber
+                                    \node[canvas is yz plane at x=1.5,shift={(\X+0.5,\Y+0.5)}] {\Z};
+                                    \fi
+                                    \pgfmathtruncatemacro{\Z}{2-\XX+3*(2-\YY)+9}
+                                    \pgfmathsetmacro{\mycolor}{\myarray[\Z]}
+                                    \draw [thick,canvas is xz plane at y=1.5,shift={(\X,\Y)},fill=\mycolor] (0.5,0) -- ({1-\radius},0) arc (-90:0:\radius) -- (1,{1-\radius}) arc (0:90:\radius) -- (\radius,1) arc (90:180:\radius) -- (0,\radius) arc (180:270:\radius) -- cycle;
+                                    \ifshowcellnumber
+                                    \node[canvas is xz plane at y=1.5,shift={(\X+0.5,\Y+0.5)},xscale=-1] {\Z};
+                                    \fi
+                                    \pgfmathtruncatemacro{\Z}{2-\YY+3*\XX+18}
+                                    \pgfmathsetmacro{\mycolor}{\myarray[\Z]}
+                                    \draw [thick,canvas is yx plane at z=1.5,shift={(\X,\Y)},fill=\mycolor] (0.5,0) -- ({1-\radius},0) arc (-90:0:\radius) -- (1,{1-\radius}) arc (0:90:\radius) -- (\radius,1) arc (90:180:\radius) -- (0,\radius) arc (180:270:\radius) -- cycle;
+                                    \ifshowcellnumber
+                                    \node[canvas is yx plane at z=1.5,shift={(\X+0.5,\Y+0.5)},xscale=-1,rotate=-90] {\Z};
+                                    \fi
+                                }
+                            }
+
+                            \draw [decorate,decoration={calligraphic brace,amplitude=10pt,mirror},yshift=0pt, line width=1.25pt]
+                            (3,0) -- (3,3) node [black,midway,xshift=-8pt, yshift=-14pt] {\footnotesize $\mathcal{E}$};
+                            \draw [decorate,decoration={calligraphic brace,amplitude=10pt},yshift=0pt, line width=1.25pt]
+                            (3,0) -- (0,-3) node [black,midway,xshift=-16pt, yshift=0pt] {\footnotesize $\mathcal{F}$};
+                            \draw [decorate,decoration={calligraphic brace,amplitude=10pt},yshift=0pt, line width=1.25pt]
+                            (0,-3) -- (-3,-3) node [black,midway,xshift=-8pt, yshift=14pt] {\footnotesize $\mathcal{G}$};
+                        \end{scope}
+                    \end{tikzpicture}
+                \end{adjustbox}
+            \end{tabular}
+        \end{table}
+        \egroup
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Tensor contraction}
+        \begin{table}[H]
+            \begin{tabular}{lll}
+                \textbf{Notation} & & \textbf{Code}                 \\\\
+                $A \ndot{foo} B$ & & \texttt{A.mv(B)} \\
+
+                $\nsum{foo} C$ & & \texttt{namedtensor.sum('C')}
+            \end{tabular}
+        \end{table}
+    \end{frame}
+
+    \begin{frame}[fragile]
+        \frametitle{Checking matrix multiplication}
+
+        Suppose we have two tensors, $A: \mathbb{R}^{\textcolor{blue}{x}\times \textcolor{orange}{y} \times \cdots}$ and $B: \mathbb{R}^{\textcolor{orange}{y}\times \textcolor{purple}{z} \times \cdots}$
+
+        Then \texttt{C = A @ B} has type $C: \mathbb{R}^{\textcolor{blue}{x}\times \textcolor{purple}{z} \times \cdots}$.
+
+        \noindent\rule{\textwidth}{0.5pt}
+
+        \begin{lstlisting}[escapeinside={<@}{@>}]
+
+state = torch.ones(<@\textcolor{blue}{9}@>, <@\textcolor{orange}{5}@>, names=('<@\textcolor{blue}{batch}@>', '<@\textcolor{orange}{D}@>'))
+trans = torch.randn(<@\textcolor{orange}{5}@>, <@\textcolor{purple}{5}@>, names=('<@\textcolor{orange}{in}@>', '<@\textcolor{purple}{out}@>'))
+next_state = state @ trans
+print(next_state.names)
+        \end{lstlisting}
+        \noindent\rule{\textwidth}{0.5pt}
+        \begin{lstlisting}[escapeinside={<@}{@>}]
+
+('<@\textcolor{blue}{batch}@>', '<@\textcolor{purple}{out}@>')
+        \end{lstlisting}
+    \end{frame}
+
+    \begin{frame}[fragile]
+        \frametitle{Runtime type checking: name mismatch}
+        \begin{lstlisting}[language=Python]
+x = torch.ones(3, names=('X',))
+y = torch.ones(3)
+z = torch.ones(3, names=('Z',))
+xpz = x + z
+        \end{lstlisting}
+        \noindent\rule{\textwidth}{0.5pt}
+        \begin{lstlisting}[escapeinside={<@}{@>}]
+<@\textcolor{red}{----RuntimeError}@>
+Traceback (most recent call last)[...]
+      <@\textcolor{green}{2}@> y = torch.ones(3)
+      <@\textcolor{green}{3}@> z = torch.ones(3, names=('Z',))
+<@\textcolor{green}{----> 4}@> xpz = x + z
+<@\textcolor{red}{RuntimeError}@>: Error attempting to broadcast
+dims ['X'] and dims ['Z']: dim 'X' and dim 'Z'
+are at the same position from the right
+        \end{lstlisting}
+    \end{frame}
 
 
 \end{document}

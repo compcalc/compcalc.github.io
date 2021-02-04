@@ -2,6 +2,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{color}
 \usepackage{listings}
 
 \lstset{basicstyle=\ttfamily,breaklines=true}
@@ -11,6 +12,8 @@
 \makeatother
 \setmonofont{JetBrains Mono}[Contextuals=Alternate]
 
+\usepackage{amsmath}
+\usepackage{amsfonts}
 \usepackage{adjustbox}
 \usepackage{unicode-math}
 \usepackage[pdf]{graphviz}
@@ -22,30 +25,127 @@
 \begin{document}
     \frame{\titlepage}
 
-    \begin{frame}
-        \frametitle{AD in PyTorch}
-        \begin{enumerate}
-            \item Brief introduction to AD
-            \item Implicit
-        \end{enumerate}
-    \end{frame}
 
     \begin{frame}
-        \frametitle{Static vs. Dynamic ADs}
+        \frametitle{What is automatic differentiation?}
+        To understand AD, you just need to remember two simple rules:
+        \begin{align*}
+            D(f + g) &= D(f) + D(g) \\
+            D(f \cdot g) &= D(f) \cdot g + f \cdot D(g)
+        \end{align*}
+        We can think of AD as a \textit{linear map} between functions.
+
+        \begin{align*}
+            D(f + g) &= D(f) + D(g) \\
+            D(f \cdot g) &= D(f) \cdot g + f \cdot D(g)
+        \end{align*}
+    \end{frame}
+
+
+    \begin{frame}
+        \frametitle{Higher order and higher rank AD}
+
+        The \textit{gradient}, $\nabla: (\mathbb{R}^m\rightarrow\mathbb{R})\rightarrow\mathbb{R}^m$ maps a function $Q$ to:
+
+        \begin{equation*}
+            \nabla Q(q_1, \dots, q_m) = \left[ \frac{\partial Q}{\partial q_1}, \dots, \frac{\partial Q}{\partial q_m}\right]
+        \end{equation*}
+
+        The \textit{Jacobian}, $\mathcal{J}: (\mathbb{R}^m\rightarrow\mathbb{R}^n)\rightarrow\mathbb{R}^{n \times m}$ is a matrix of partials:
+
+        \begin{equation*}
+            \mathcal{J}\circ\mathbf{f} =
+            \begin{bmatrix}
+                \dfrac{\partial \mathbf{f}}{\partial x_1} & \cdots & \dfrac{\partial \mathbf{f}}{\partial x_m}
+            \end{bmatrix} =
+            \begin{bmatrix}
+                \dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_m}\\
+                \vdots & \ddots & \vdots\\
+                \dfrac{\partial f_n}{\partial x_1} & \cdots & \dfrac{\partial f_n}{\partial x_m}
+            \end{bmatrix} =
+            \begin{bmatrix}
+                \nabla f_1 \\
+                \vdots \\
+                \nabla f_m
+            \end{bmatrix}
+        \end{equation*}
     \end{frame}
 
     \begin{frame}[fragile]
-        \frametitle{Static AD: Dataflow}
+        \frametitle{Jacobians in PyTorch}
+        \begin{lstlisting}[language=Python]
+def jacobian(fun, x) -> torch.Tensor:
+    x = x.detach().requires_grad_()
+    y = fun(x)
+    def vjp(v) -> torch.Tensor:
+        return torch.autograd.grad(y, x, v)[0]
+
+    vs = torch.eye(y.numel())\
+              .view(y.numel(), *y.shape)
+    result = vmap(vjp)(vs)
+    return result.detach()
+
+f = lambda x: x ** 3
+jacobian(f, torch.ones(3))
+        \end{lstlisting}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Higher order and higher rank AD}
+
+        Suppose we have a function $P(X) = p_k \circ p_{k-1} \circ \cdots \circ p_1 \circ X$. The derivative of a linear composition can be expressed as a product:
+
+        \begin{equation*} \label{eq:sfun_chain_rule}
+        \frac{dP}{dp_1} = \frac{dp_k}{dp_{k-1}}\frac{dp_{k-1}}{dp_{k-2}}\dots\frac{dp_2}{dp_1}= {\displaystyle \prod_{i=1}^{k-1} \frac{dp_{i+1}}{dp_{i}}}
+        \end{equation*}
+
+        This also holds in higher dimensions, for example $\mathbf{P}_k: \mathbb{R}^m\rightarrow\mathbb{R}^n$:
+
+        \begin{align*} \label{eq:vfun_chain_rule}
+        \mathcal{J} \mathbf{P_k} = \displaystyle \prod_{i=1}^{k} \mathcal{J}p_i &= \underbrace{\bigg(\Big((\mathcal{J}p_k \mathcal{J}p_{k-1}) \dots \mathcal{J}p_2\Big) \mathcal{J}p_1\bigg)}_{\textit{Reverse mode, VJP, Pullback}} \\
+        &= \underbrace{\bigg(\mathcal{J}p_k \Big(\mathcal{J}p_{k-1} \dots (\mathcal{J}p_2 \mathcal{J}p_1)\Big)\bigg)}_{\textit{Forward mode, JVP, Pushforward}}
+        \end{align*}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Higher order and higher rank AD}
+
+        The \textit{Hessian} $\mathbf{H}:(\mathbb{R}^m\rightarrow\mathbb{R})\rightarrow\mathbb{R}^{m\times m}$ maps scalar functions to $\partial^2$:
+
+        \begin{equation*}
+            \mathbf{H}(Q) = \begin{bmatrix}{\dfrac {\partial ^{2}Q}{\partial x_{1}^{2}}}&{\dfrac {\partial ^{2}Q}{\partial x_{1}\,\partial x_{2}}}&\cdots &{\dfrac {\partial ^{2}Q}{\partial x_{1}\,\partial x_{m}}}\\[2.2ex]{\dfrac {\partial ^{2}Q}{\partial x_{2}\,\partial x_{1}}}&{\dfrac {\partial ^{2}Q}{\partial x_{2}^{2}}}&\cdots &{\dfrac {\partial ^{2}Q}{\partial x_{2}\,\partial x_{m}}}\\[2.2ex]\vdots &\vdots &\ddots &\vdots \\[2.2ex]{\dfrac {\partial ^{2}Q}{\partial x_{m}\,\partial x_{1}}}&{\dfrac {\partial ^{2}Q}{\partial x_{m}\,\partial x_{2}}}&\cdots &{\dfrac {\partial ^{2}Q}{\partial x_{m}^{2}}}\end{bmatrix}
+        \end{equation*}
+
+        The Hessian and Jacobian are related by $\mathbf{H}(Q)^\intercal = \mathcal{J} \circ \nabla Q$.
+    \end{frame}
+
+    \begin{frame}[fragile]
+        \frametitle{Hessians in PyTorch}
+        \begin{lstlisting}[language=Python]
+def hessian(fun, x) -> torch.Tensor:
+    def grad0(x: torch.Tensor):
+        y = fun(x)
+        assert y.dim() == 0
+        return torch.autograd.grad(y, x, create_graph=True)[0]
+    return jacobian(grad0, x)
+
+g = lambda x: (x ** 3).sum()
+hessian(g, torch.ones(3))
+        \end{lstlisting}
+    \end{frame}
+
+    \begin{frame}[fragile]
+        \frametitle{Static vs. Dynamic ADs: Representations}
         \begin{table}[H]
             \centering
             \begin{tabular}{lll}
                 \textbf{Program} & & \textbf{Computation Graph} \\\\
 %            \begin{tabular}[c]{@{}l@{}} $\hat y = θx + b$\\ $l = ||\hat y - y||_2$\end{tabular} &
-                    \begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
+                    \begin{lstlisting}[basicstyle=\ttfamily\footnotesize, language=Python]
 sum = 0
 l = [0, 0, 0, 0]
 for i in range(0, 4):
-  l[i] += θ[i] * x[i]
+  l[i] += t[i] * x[i]
 for i in range(0, 4):
   l[i] -= y[i] - b
 for i in range(0, 4):
@@ -53,7 +153,8 @@ for i in range(0, 4):
 for i in range(0, 4):
   sum += l[i]
 l = sqrt(sum)
-                    \end{lstlisting} & & \begin{adjustbox}{minipage={.4\textwidth}, height=0.22\textwidth, margin*=0cm 0cm 0cm 0.1cm}
+                    \end{lstlisting} & &
+                \begin{adjustbox}{minipage={.4\textwidth}, height=0.22\textwidth, margin*=0cm 0cm 0cm 0.1cm}
                       \digraph[scale=0.1]{prograph}{
                           node[ fontname="Helvetica" fontsize=20 shape=Mrecord ];
                           edge[ fontname="Helvetica" fontsize=18 ];
@@ -184,4 +285,22 @@ l = sqrt(sum)
             \end{tabular}
         \end{table}
     \end{frame}
+
+%    \begin{frame}
+%      \frametitle{AD in PyTorch}
+%      \begin{enumerate}
+%        \item Introduction to AD
+%        \item Implicit vs.
+%      \end{enumerate}
+%    \end{frame}
+%
+%    \begin{frame}
+%      \frametitle{Stateful vs. stateless computation}
+%      \begin{enumerate}
+%        \item Introduction to AD
+%        \item Implicit vs.
+%      \end{enumerate}
+%    \end{frame}
+
+
 \end{document}

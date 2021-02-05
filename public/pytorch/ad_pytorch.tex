@@ -36,67 +36,26 @@
     \begin{frame}
         \frametitle{What is automatic differentiation?}
         \begin{itemize}
-            \item Before AD (BC) derivatives had to computed by hand
-            \item This caused researchers a great deal of frustration
+%            \item Before AD (BC), derivatives had to be computed by hand
+%            \item This caused researchers a great deal of frustration
+            \item AD is a higher-order function which either:
+            \begin{itemize}
+            \item Accepts a function and returns a second function which gives, when evaluated, the sensitivity at \textit{any location}, $AD: (f) \mapsto f'$
+            \item Accepts a function and an input to be evaluated, and evaluates the function and its derivative, \textit{at that specific location} $AD: (f, x) \mapsto (f(x), f'(x))$
+            \end{itemize}
+            \item These two views correspond to static and dynamic AD
+            \begin{itemize}
+            \item For mathematical expressions, the static approach is preferred
+            \item For computer programs, the dynamic approach is preferred
+            \end{itemize}
         \end{itemize}
     \end{frame}
 
-    \begin{frame}
-        \frametitle{Different types of AD frameworks}
-        \begin{figure}[H]
-            \centering
-            \includegraphics[width=0.8\textwidth]{ad_dsls.png}
-        \end{figure}
-    \end{frame}
-
-    \begin{frame}
-        \frametitle{AD and Differentiable Programming}
-        \begin{figure}[H]
-            \centering
-            \includegraphics[width=0.8\textwidth]{diff_prob_prog.png}
-        \end{figure}
-    \end{frame}
-
-    \begin{frame}
-        \frametitle{What is automatic differentiation?}
-        To understand AD, you just need to remember two simple rules:
-        \begin{align*}
-            D(f + g) &= D(f) + D(g) \\
-            D(f \cdot g) &= D(f) \cdot g + f \cdot D(g)
-        \end{align*}
-        We can think of AD as a \textit{linear map} between function spaces.
-
-        \begin{align*}
-            D(f + g) &= D(f) + D(g) \\
-            \alpha D(f) &= D(\alpha f)
-        \end{align*}
-    \end{frame}
-
     \begin{frame}[fragile]
-        \frametitle{Picrograd / PyTorch in a single slide}
-        \begin{lstlisting}[language=Python, linewidth=1.1\linewidth]
-class Var:
-  def __init__(self, val, grad_fn=lambda: []):
-    self.v, self.grad_fn = val, grad_fn
+        \frametitle{Static and Dynamic Representations}
 
-  def __add__(self, other):
-    return Var(self.v + other.v,
-      lambda: [(self, 1.0), (other, 1.0)])
+        Programs are dynamical systems, graphs are a static objects.
 
-  def __mul__(self, other):
-    return Var(self.v * other.v,
-      lambda: [(self, other.v), (other, self.v)])
-
-  def grad(self, bp = 1.0, dict = {}):
-    dict[self] = dict.get(self, 0) + bp
-    for input, val in self.grad_fn():
-        input.grad(val * bp, dict)
-    return dict
-        \end{lstlisting}
-    \end{frame}
-
-    \begin{frame}[fragile]
-        \frametitle{Static vs. Dynamic ADs: Representations}
         \begin{table}[H]
             \centering
             \begin{tabular}{lll}
@@ -249,6 +208,60 @@ l = sqrt(sum)
     \end{frame}
 
     \begin{frame}
+        \frametitle{Dimensions of AD frameworks}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{ad_dsls.png}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Applications of Automatic Differentiation}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{diff_prob_prog.png}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{What is automatic differentiation?}
+        To understand AD, you just need to remember two simple rules:
+        \begin{align*}
+            D(f + g) &= D(f) + D(g) \\
+            D(f \cdot g) &= D(f) \cdot g + f \cdot D(g)
+        \end{align*}
+        We can think of AD as a \textit{linear map} between function spaces.
+
+        \begin{align*}
+            D(f + g) &= D(f) + D(g) \\
+            \alpha D(f) &= D(\alpha f)
+        \end{align*}
+    \end{frame}
+
+    \begin{frame}[fragile]
+        \frametitle{Picrograd / PyTorch in a single slide}
+        \begin{lstlisting}[language=Python, linewidth=1.1\linewidth]
+class Var:
+  def __init__(self, val, grad_fn=lambda: []):
+    self.v, self.grad_fn = val, grad_fn
+
+  def __add__(self, other):
+    return Var(self.v + other.v,
+      lambda: [(self, 1.0), (other, 1.0)])
+
+  def __mul__(self, other):
+    return Var(self.v * other.v,
+      lambda: [(self, other.v), (other, self.v)])
+
+  def grad(self, bp = 1.0, dict = {}):
+    dict[self] = dict.get(self, 0) + bp
+    for input, val in self.grad_fn():
+        input.grad(val * bp, dict)
+    return dict
+        \end{lstlisting}
+    \end{frame}
+
+    \begin{frame}
         \frametitle{Higher order and higher rank AD}
 
         The \textit{gradient}, $\nabla: (\mathbb{R}^m\rightarrow\mathbb{R})\rightarrow\mathbb{R}^m$ maps a function $Q$ to:
@@ -277,6 +290,25 @@ l = sqrt(sum)
         \end{equation*}
     \end{frame}
 
+    \begin{frame}
+        \frametitle{Higher order and higher rank AD}
+
+        Suppose we have a function $P(X) = p_k \circ p_{k-1} \circ \cdots \circ p_1 \circ X$. The derivative of a linear composition can be expressed as a product:
+
+        \begin{equation*}
+            \label{eq:sfun_chain_rule}
+            \frac{dP}{dp_1} = \frac{dp_k}{dp_{k-1}}\frac{dp_{k-1}}{dp_{k-2}}\dots\frac{dp_2}{dp_1}= {\displaystyle \prod_{i=1}^{k-1} \frac{dp_{i+1}}{dp_{i}}}
+        \end{equation*}
+
+        This also holds in higher dimensions, for example $\mathbf{P}_k: \mathbb{R}^m\rightarrow\mathbb{R}^n$:
+
+        \begin{align*}
+            \label{eq:vfun_chain_rule}
+            \mathcal{J} \mathbf{P_k} = \displaystyle \prod_{i=1}^{k} \mathcal{J}p_i &= \underbrace{\bigg(\Big((\mathcal{J}p_k \mathcal{J}p_{k-1}) \dots \mathcal{J}p_2\Big) \mathcal{J}p_1\bigg)}_{\textit{Reverse mode, VJP, Pullback}} \\
+            &= \underbrace{\bigg(\mathcal{J}p_k \Big(\mathcal{J}p_{k-1} \dots (\mathcal{J}p_2 \mathcal{J}p_1)\Big)\bigg)}_{\textit{Forward mode, JVP, Pushforward}}
+        \end{align*}
+    \end{frame}
+
     \begin{frame}[fragile]
         \frametitle{Gradients in PyTorch}
 
@@ -298,8 +330,34 @@ torch.autograd.grad(f, inputs=(x, t))
 
 (tensor([-0.60,  2.85]), tensor([0.23, 1.47]))
         \end{lstlisting}
+    \end{frame}
+
+    \begin{frame}[fragile]
+        \frametitle{What is a vectorizing map? (vmap)}
+
+        Suppose we have a scalar-valued function, $f: \mathbb{R}\rightarrow\mathbb{R}$. \texttt{vmap} is a function
+        which takes $f$ and returns a function $g: \mathbb{R}^{*}\rightarrow\mathbb{R}^{*}$ that accepts a tensor $t: \mathbb{R}^{*}$, and maps $f$ over the tensor, elementwise.
+        \noindent\rule{\textwidth}{0.5pt}
+
+        \begin{lstlisting}[language=Python]
+function = lambda x: x**2 + x
+tensor = torch.ones(3, 3, 3) * 2
+vmap(function)(tensor)
+        \end{lstlisting}
+
+        \noindent\rule{\textwidth}{0.5pt}
+        \begin{lstlisting}[language=Python, linewidth=1.1\linewidth]
+torch.dot            # [  D  ],[  D  ] ->   S
+vd = vmap(torch.dot) # [ N,D ],[ N,D ] -> [ N ]
+vvd = vmap(vd)       # [N,D,C],[N,D,C] -> [N,D]
+x, y = torch.ones(3, 2, 5), torch.ones(3, 2, 5)
+vvd(x, y)
+        \end{lstlisting}
 
     \end{frame}
+
+%    More generally, $f$ can be a tensor function, in which case, \texttt{vmap}'s shape depends on dim $f$ and dim $t$.
+%    \noindent\rule{\textwidth}{0.5pt}
 
     \begin{frame}[fragile]
         \frametitle{Jacobians in PyTorch}
@@ -324,25 +382,6 @@ tensor([[3., 0., 0.],
         [0., 3., 0.],
         [0., 0., 3.]])
         \end{lstlisting}
-    \end{frame}
-
-    \begin{frame}
-        \frametitle{Higher order and higher rank AD}
-
-        Suppose we have a function $P(X) = p_k \circ p_{k-1} \circ \cdots \circ p_1 \circ X$. The derivative of a linear composition can be expressed as a product:
-
-        \begin{equation*}
-            \label{eq:sfun_chain_rule}
-            \frac{dP}{dp_1} = \frac{dp_k}{dp_{k-1}}\frac{dp_{k-1}}{dp_{k-2}}\dots\frac{dp_2}{dp_1}= {\displaystyle \prod_{i=1}^{k-1} \frac{dp_{i+1}}{dp_{i}}}
-        \end{equation*}
-
-        This also holds in higher dimensions, for example $\mathbf{P}_k: \mathbb{R}^m\rightarrow\mathbb{R}^n$:
-
-        \begin{align*}
-            \label{eq:vfun_chain_rule}
-            \mathcal{J} \mathbf{P_k} = \displaystyle \prod_{i=1}^{k} \mathcal{J}p_i &= \underbrace{\bigg(\Big((\mathcal{J}p_k \mathcal{J}p_{k-1}) \dots \mathcal{J}p_2\Big) \mathcal{J}p_1\bigg)}_{\textit{Reverse mode, VJP, Pullback}} \\
-            &= \underbrace{\bigg(\mathcal{J}p_k \Big(\mathcal{J}p_{k-1} \dots (\mathcal{J}p_2 \mathcal{J}p_1)\Big)\bigg)}_{\textit{Forward mode, JVP, Pushforward}}
-        \end{align*}
     \end{frame}
 
     \begin{frame}

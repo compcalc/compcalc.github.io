@@ -33,6 +33,29 @@
 \begin{document}
     \frame{\titlepage}
 
+    \begin{frame}
+        \frametitle{What is automatic differentiation?}
+        \begin{itemize}
+            \item Before AD (BC) derivatives had to computed by hand
+            \item This caused researchers a great deal of frustration
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Different types of AD frameworks}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{ad_dsls.png}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{AD and Differentiable Programming}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{diff_prob_prog.png}
+        \end{figure}
+    \end{frame}
 
     \begin{frame}
         \frametitle{What is automatic differentiation?}
@@ -45,128 +68,30 @@
 
         \begin{align*}
             D(f + g) &= D(f) + D(g) \\
-            D(f \cdot g) &= D(f) \cdot g + f \cdot D(g)
+            \alpha D(f) &= D(\alpha f)
         \end{align*}
     \end{frame}
 
-
-    \begin{frame}
-        \frametitle{Higher order and higher rank AD}
-
-        The \textit{gradient}, $\nabla: (\mathbb{R}^m\rightarrow\mathbb{R})\rightarrow\mathbb{R}^m$ maps a function $Q$ to:
-
-        \begin{equation*}
-            \nabla Q(q_1, \dots, q_m) = \left[ \frac{\partial Q}{\partial q_1}, \dots, \frac{\partial Q}{\partial q_m}\right]
-        \end{equation*}
-
-        The \textit{Jacobian}, $\mathcal{J}: (\mathbb{R}^m\rightarrow\mathbb{R}^n)\rightarrow\mathbb{R}^{n \times m}$ is a matrix of partials:
-
-        \begin{equation*}
-            \mathcal{J}\circ\mathbf{f} =
-            \begin{bmatrix}
-                \dfrac{\partial \mathbf{f}}{\partial x_1} & \cdots & \dfrac{\partial \mathbf{f}}{\partial x_m}
-            \end{bmatrix} =
-            \begin{bmatrix}
-                \dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_m}\\
-                \vdots & \ddots & \vdots\\
-                \dfrac{\partial f_n}{\partial x_1} & \cdots & \dfrac{\partial f_n}{\partial x_m}
-            \end{bmatrix} =
-            \begin{bmatrix}
-                \nabla f_1 \\
-                \vdots \\
-                \nabla f_m
-            \end{bmatrix}
-        \end{equation*}
-    \end{frame}
-
     \begin{frame}[fragile]
-        \frametitle{Gradients in PyTorch}
+        \frametitle{Picrograd / PyTorch in a single slide}
+        \begin{lstlisting}[language=Python, linewidth=1.1\linewidth]
+class Var:
+  def __init__(self, val, grad_fn=lambda: []):
+    self.v, self.grad_fn = val, grad_fn
 
-        Suppose we have a scalar-valued vector function, $f: \mathbb{R}^{n}\times\mathbb{R}^{n}\rightarrow\mathbb{R}$:
+  def __add__(self, other):
+    return Var(self.v + other.v,
+      lambda: [(self, 1.0), (other, 1.0)])
 
-        \noindent\rule{\textwidth}{0.5pt}
+  def __mul__(self, other):
+    return Var(self.v * other.v,
+      lambda: [(self, other.v), (other, self.v)])
 
-        \begin{lstlisting}[language=Python]
-x = torch.randn(2, requires_grad=True)
-t = torch.tensor([2., 3.], requires_grad=True)
-y = torch.randn(2)
-f = sum((x*t - y)**2)**0.5
-
-torch.autograd.grad(f, inputs=[x, t])
-        \end{lstlisting}
-
-        \noindent\rule{\textwidth}{0.5pt}
-        \begin{lstlisting}
-
-(tensor([-0.60,  2.85]), tensor([0.23, 1.47]))
-        \end{lstlisting}
-
-    \end{frame}
-
-    \begin{frame}[fragile]
-        \frametitle{Jacobians in PyTorch}
-        \begin{lstlisting}[language=Python]
-def jacobian(fun, x) -> torch.Tensor:
-    x = x.detach().requires_grad_()
-    y = fun(x)
-    def vjp(v) -> torch.Tensor:
-        return torch.autograd.grad(y, x, v)[0]
-
-    vs = torch.eye(y.numel())\
-              .view(y.numel(), *y.shape)
-    result = vmap(vjp)(vs)
-    return result.detach()
-
-f = lambda x: x ** 3
-jacobian(f, torch.ones(3))
-        \end{lstlisting}
-    \end{frame}
-
-    \begin{frame}
-        \frametitle{Higher order and higher rank AD}
-
-        Suppose we have a function $P(X) = p_k \circ p_{k-1} \circ \cdots \circ p_1 \circ X$. The derivative of a linear composition can be expressed as a product:
-
-        \begin{equation*}
-            \label{eq:sfun_chain_rule}
-            \frac{dP}{dp_1} = \frac{dp_k}{dp_{k-1}}\frac{dp_{k-1}}{dp_{k-2}}\dots\frac{dp_2}{dp_1}= {\displaystyle \prod_{i=1}^{k-1} \frac{dp_{i+1}}{dp_{i}}}
-        \end{equation*}
-
-        This also holds in higher dimensions, for example $\mathbf{P}_k: \mathbb{R}^m\rightarrow\mathbb{R}^n$:
-
-        \begin{align*}
-            \label{eq:vfun_chain_rule}
-            \mathcal{J} \mathbf{P_k} = \displaystyle \prod_{i=1}^{k} \mathcal{J}p_i &= \underbrace{\bigg(\Big((\mathcal{J}p_k \mathcal{J}p_{k-1}) \dots \mathcal{J}p_2\Big) \mathcal{J}p_1\bigg)}_{\textit{Reverse mode, VJP, Pullback}} \\
-            &= \underbrace{\bigg(\mathcal{J}p_k \Big(\mathcal{J}p_{k-1} \dots (\mathcal{J}p_2 \mathcal{J}p_1)\Big)\bigg)}_{\textit{Forward mode, JVP, Pushforward}}
-        \end{align*}
-    \end{frame}
-
-    \begin{frame}
-        \frametitle{Higher order and higher rank AD}
-
-        The \textit{Hessian} $\mathbf{H}:(\mathbb{R}^m\rightarrow\mathbb{R})\rightarrow\mathbb{R}^{m\times m}$ maps scalar functions to $\partial^2$:
-
-        \begin{equation*}
-            \mathbf{H}(Q) = \begin{bmatrix}{\dfrac {\partial ^{2}Q}{\partial x_{1}^{2}}}
-                                &{\dfrac {\partial ^{2}Q}{\partial x_{1}\,\partial x_{2}}}&\cdots &{\dfrac {\partial ^{2}Q}{\partial x_{1}\,\partial x_{m}}}\\[2.2ex]{\dfrac {\partial ^{2}Q}{\partial x_{2}\,\partial x_{1}}}&{\dfrac {\partial ^{2}Q}{\partial x_{2}^{2}}}&\cdots &{\dfrac {\partial ^{2}Q}{\partial x_{2}\,\partial x_{m}}}\\[2.2ex]\vdots &\vdots &\ddots &\vdots \\[2.2ex]{\dfrac {\partial ^{2}Q}{\partial x_{m}\,\partial x_{1}}}&{\dfrac {\partial ^{2}Q}{\partial x_{m}\,\partial x_{2}}}&\cdots &{\dfrac {\partial ^{2}Q}{\partial x_{m}^{2}}}
-            \end{bmatrix}
-        \end{equation*}
-
-        The Hessian and Jacobian are related by $\mathbf{H}(Q)^\intercal = \mathcal{J} \circ \nabla Q$.
-    \end{frame}
-
-    \begin{frame}[fragile]
-        \frametitle{Hessians in PyTorch}
-        \begin{lstlisting}[language=Python]
-def hessian(fun, x) -> torch.Tensor:
-    def grad0(x: torch.Tensor):
-        y = fun(x)
-        assert y.dim() == 0
-        return torch.autograd.grad(y, x, create_graph=True)[0]
-    return jacobian(grad0, x)
-
-g = lambda x: (x ** 3).sum()
-hessian(g, torch.ones(3))
+  def grad(self, bp = 1.0, dict = {}):
+    dict[self] = dict.get(self, 0) + bp
+    for input, val in self.grad_fn():
+        input.grad(val * bp, dict)
+    return dict
         \end{lstlisting}
     \end{frame}
 
@@ -323,6 +248,140 @@ l = sqrt(sum)
         \end{table}
     \end{frame}
 
+    \begin{frame}
+        \frametitle{Higher order and higher rank AD}
+
+        The \textit{gradient}, $\nabla: (\mathbb{R}^m\rightarrow\mathbb{R})\rightarrow\mathbb{R}^m$ maps a function $Q$ to:
+
+        \begin{equation*}
+            \nabla Q(q_1, \dots, q_m) = \left[ \frac{\partial Q}{\partial q_1}, \dots, \frac{\partial Q}{\partial q_m}\right]
+        \end{equation*}
+
+        The \textit{Jacobian}, $\mathcal{J}: (\mathbb{R}^m\rightarrow\mathbb{R}^n)\rightarrow\mathbb{R}^{n \times m}$ is a matrix of partials:
+
+        \begin{equation*}
+            \mathcal{J}\circ\mathbf{f} =
+            \begin{bmatrix}
+                \dfrac{\partial \mathbf{f}}{\partial x_1} & \cdots & \dfrac{\partial \mathbf{f}}{\partial x_m}
+            \end{bmatrix} =
+            \begin{bmatrix}
+                \dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_m}\\
+                \vdots & \ddots & \vdots\\
+                \dfrac{\partial f_n}{\partial x_1} & \cdots & \dfrac{\partial f_n}{\partial x_m}
+            \end{bmatrix} =
+            \begin{bmatrix}
+                \nabla f_1 \\
+                \vdots \\
+                \nabla f_m
+            \end{bmatrix}
+        \end{equation*}
+    \end{frame}
+
+    \begin{frame}[fragile]
+        \frametitle{Gradients in PyTorch}
+
+        Suppose we have a scalar-valued vector function, $f: \mathbb{R}^{n}\times\mathbb{R}^{n}\rightarrow\mathbb{R}$:
+
+        \noindent\rule{\textwidth}{0.5pt}
+
+        \begin{lstlisting}[language=Python]
+x = torch.randn(2, requires_grad=True)
+t = torch.tensor([2., 3.], requires_grad=True)
+y = torch.randn(2)
+f = sum((x*t - y)**2)**0.5
+
+torch.autograd.grad(f, inputs=(x, t))
+        \end{lstlisting}
+
+        \noindent\rule{\textwidth}{0.5pt}
+        \begin{lstlisting}
+
+(tensor([-0.60,  2.85]), tensor([0.23, 1.47]))
+        \end{lstlisting}
+
+    \end{frame}
+
+    \begin{frame}[fragile]
+        \frametitle{Jacobians in PyTorch}
+        \begin{lstlisting}[language=Python, linewidth=1.1\linewidth]
+def jacobian(fun, x) -> torch.Tensor:
+  x = x.detach().requires_grad_()
+  y = fun(x)
+  vjp = lambda v: torch.autograd.grad(y, x, v)[0]
+  vs = torch.eye(y.numel())\
+            .view(y.numel(), *y.shape)
+  result = vmap(vjp)(vs)
+  return result.detach()
+
+f = lambda x: x ** 3
+jacobian(f, torch.ones(3))
+        \end{lstlisting}
+
+        \noindent\rule{1.03\textwidth}{0.5pt}
+
+        \begin{lstlisting}
+tensor([[3., 0., 0.],
+        [0., 3., 0.],
+        [0., 0., 3.]])
+        \end{lstlisting}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Higher order and higher rank AD}
+
+        Suppose we have a function $P(X) = p_k \circ p_{k-1} \circ \cdots \circ p_1 \circ X$. The derivative of a linear composition can be expressed as a product:
+
+        \begin{equation*}
+            \label{eq:sfun_chain_rule}
+            \frac{dP}{dp_1} = \frac{dp_k}{dp_{k-1}}\frac{dp_{k-1}}{dp_{k-2}}\dots\frac{dp_2}{dp_1}= {\displaystyle \prod_{i=1}^{k-1} \frac{dp_{i+1}}{dp_{i}}}
+        \end{equation*}
+
+        This also holds in higher dimensions, for example $\mathbf{P}_k: \mathbb{R}^m\rightarrow\mathbb{R}^n$:
+
+        \begin{align*}
+            \label{eq:vfun_chain_rule}
+            \mathcal{J} \mathbf{P_k} = \displaystyle \prod_{i=1}^{k} \mathcal{J}p_i &= \underbrace{\bigg(\Big((\mathcal{J}p_k \mathcal{J}p_{k-1}) \dots \mathcal{J}p_2\Big) \mathcal{J}p_1\bigg)}_{\textit{Reverse mode, VJP, Pullback}} \\
+            &= \underbrace{\bigg(\mathcal{J}p_k \Big(\mathcal{J}p_{k-1} \dots (\mathcal{J}p_2 \mathcal{J}p_1)\Big)\bigg)}_{\textit{Forward mode, JVP, Pushforward}}
+        \end{align*}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Higher order and higher rank AD}
+
+        The \textit{Hessian} $\mathbf{H}:(\mathbb{R}^m\rightarrow\mathbb{R})\rightarrow\mathbb{R}^{m\times m}$ maps scalar functions to $\partial^2$:
+
+        \begin{equation*}
+            \mathbf{H}(Q) = \begin{bmatrix}{\dfrac {\partial ^{2}Q}{\partial x_{1}^{2}}}
+                                &{\dfrac {\partial ^{2}Q}{\partial x_{1}\,\partial x_{2}}}&\cdots &{\dfrac {\partial ^{2}Q}{\partial x_{1}\,\partial x_{m}}}\\[2.2ex]{\dfrac {\partial ^{2}Q}{\partial x_{2}\,\partial x_{1}}}&{\dfrac {\partial ^{2}Q}{\partial x_{2}^{2}}}&\cdots &{\dfrac {\partial ^{2}Q}{\partial x_{2}\,\partial x_{m}}}\\[2.2ex]\vdots &\vdots &\ddots &\vdots \\[2.2ex]{\dfrac {\partial ^{2}Q}{\partial x_{m}\,\partial x_{1}}}&{\dfrac {\partial ^{2}Q}{\partial x_{m}\,\partial x_{2}}}&\cdots &{\dfrac {\partial ^{2}Q}{\partial x_{m}^{2}}}
+            \end{bmatrix}
+        \end{equation*}
+
+        The Hessian and Jacobian are related by $\mathbf{H}(Q)^\intercal = \mathcal{J} \circ \nabla Q$.
+    \end{frame}
+
+    \begin{frame}[fragile]
+        \frametitle{Hessians in PyTorch}
+        \begin{lstlisting}[language=Python]
+def hessian(fun, x) -> torch.Tensor:
+    def grad0(x: torch.Tensor):
+        y = fun(x)
+        assert y.dim() == 0
+        return torch.autograd.grad(y, x, create_graph=True)[0]
+    return jacobian(grad0, x)
+
+g = lambda x: (x ** 3).sum()
+hessian(g, torch.ones(3))
+        \end{lstlisting}
+
+        \noindent\rule{\textwidth}{0.5pt}
+
+        \begin{lstlisting}
+tensor([[6., 0., 0.],
+        [0., 6., 0.],
+        [0., 0., 6.]])
+        \end{lstlisting}
+    \end{frame}
+
 %    \begin{frame}
 %      \frametitle{AD in PyTorch}
 %      \begin{enumerate}
@@ -438,24 +497,24 @@ l = sqrt(sum)
         \egroup
     \end{frame}
 
-    \begin{frame}
-        \frametitle{Tensor contraction}
-        \begin{table}[H]
-            \begin{tabular}{lll}
-                \textbf{Notation} & & \textbf{Code}                 \\\\
-                $A \ndot{foo} B$ & & \texttt{A.mv(B)} \\
-
-                $\nsum{foo} C$ & & \texttt{namedtensor.sum('C')}
-            \end{tabular}
-        \end{table}
-    \end{frame}
+%    \begin{frame}
+%        \frametitle{Tensor contraction}
+%        \begin{table}[H]
+%            \begin{tabular}{lll}
+%                \textbf{Notation} & & \textbf{Code}                 \\\\
+%                $A \ndot{foo} B$ & & \texttt{A.mv(B)} \\
+%
+%                $\nsum{foo} C$ & & \texttt{namedtensor.sum('C')}
+%            \end{tabular}
+%        \end{table}
+%    \end{frame}
 
     \begin{frame}[fragile]
         \frametitle{Checking matrix multiplication}
 
         Suppose we have two tensors, $A: \mathbb{R}^{\textcolor{blue}{x}\times \textcolor{orange}{y} \times \cdots}$ and $B: \mathbb{R}^{\textcolor{orange}{y}\times \textcolor{purple}{z} \times \cdots}$
 
-        Then \texttt{C = A @ B} has type $C: \mathbb{R}^{\textcolor{blue}{x}\times \textcolor{purple}{z} \times \cdots}$.
+        Then \texttt{C = A @ B} has type $C: \mathbb{R}^{\textcolor{blue}{x}\times \textcolor{purple}{z} \times \cdots}$. For example:
 
         \noindent\rule{\textwidth}{0.5pt}
 
@@ -475,21 +534,25 @@ print(next_state.names)
 
     \begin{frame}[fragile]
         \frametitle{Runtime type checking: name mismatch}
+
+        What happens if we try to sum dimensions with different names?
+
+        \noindent\rule{\textwidth}{0.5pt}
+
         \begin{lstlisting}[language=Python]
 x = torch.ones(3, names=('X',))
-y = torch.ones(3)
-z = torch.ones(3, names=('Z',))
-xpz = x + z
+y = torch.ones(3, names=('Z',))
+z = x + y
         \end{lstlisting}
         \noindent\rule{\textwidth}{0.5pt}
         \begin{lstlisting}[escapeinside={<@}{@>}]
 <@\textcolor{red}{----RuntimeError}@>
 Traceback (most recent call last)[...]
-      <@\textcolor{green}{2}@> y = torch.ones(3)
-      <@\textcolor{green}{3}@> z = torch.ones(3, names=('Z',))
+      <@\textcolor{green}{2}@> x = torch.ones(3, names=('X',))
+      <@\textcolor{green}{3}@> y = torch.ones(3, names=('Y',))
 <@\textcolor{green}{----> 4}@> xpz = x + z
 <@\textcolor{red}{RuntimeError}@>: Error attempting to broadcast
-dims ['X'] and dims ['Z']: dim 'X' and dim 'Z'
+dims ['X'] and dims ['Y']: dim 'X' and dim 'Y'
 are at the same position from the right
         \end{lstlisting}
     \end{frame}

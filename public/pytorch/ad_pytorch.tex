@@ -12,6 +12,8 @@
 \newif\ifshowcellnumber
 \showcellnumbertrue
 
+\usepackage{hyperref}
+
 \lstset{basicstyle=\ttfamily,breaklines=true}
 \usepackage{fontspec}
 \makeatletter
@@ -20,13 +22,16 @@
 \setmonofont{JetBrains Mono}[Contextuals=Alternate]
 
 \usepackage{amsmath}
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
 \usepackage{namedtensor}
 \usepackage{amsfonts}
 \usepackage{adjustbox}
 \usepackage{unicode-math}
 \usepackage[pdf]{graphviz}
 
-\title{AD in PyTorch}
+\title{Automatic Differentiation in PyTorch}
 \titlegraphic{\includegraphics[width=0.3\textwidth]{pytorch}}
 \author{Breandan Considine}
 
@@ -54,7 +59,7 @@
     \begin{frame}[fragile]
         \frametitle{Static and Dynamic Representations}
 
-        Programs are dynamical systems, graphs are a static objects.
+        Programs are dynamical systems, graphs are static objects.
 
         \begin{table}[H]
             \centering
@@ -216,7 +221,7 @@ l = sqrt(sum)
     \end{frame}
 
     \begin{frame}
-        \frametitle{Applications of Automatic Differentiation}
+        \frametitle{What is a differentiable program?}
         \begin{figure}[H]
             \centering
             \includegraphics[width=0.8\textwidth]{diff_prob_prog.png}
@@ -224,13 +229,16 @@ l = sqrt(sum)
     \end{frame}
 
     \begin{frame}
-        \frametitle{What is automatic differentiation?}
+        \frametitle{What is a derivative?}
+
         To understand AD, you just need to remember two simple rules:
+
         \begin{align*}
             D(f + g) &= D(f) + D(g) \\
             D(f \cdot g) &= D(f) \cdot g + f \cdot D(g)
         \end{align*}
-        We can think of AD as a \textit{linear map} between function spaces.
+
+        The derivative is a \textit{linear map} between function spaces.
 
         \begin{align*}
             D(f + g) &= D(f) + D(g) \\
@@ -262,7 +270,7 @@ class Var:
     \end{frame}
 
     \begin{frame}
-        \frametitle{Higher order and higher rank AD}
+        \frametitle{Higher-order and higher-rank AD}
 
         The \textit{gradient}, $\nabla: (\mathbb{R}^m\rightarrow\mathbb{R})\rightarrow\mathbb{R}^m$ maps a function $Q$ to:
 
@@ -291,7 +299,7 @@ class Var:
     \end{frame}
 
     \begin{frame}
-        \frametitle{Higher order and higher rank AD}
+        \frametitle{Higher-order chains}
 
         Suppose we have a function $P(X) = p_k \circ p_{k-1} \circ \cdots \circ p_1 \circ X$. The derivative of a linear composition can be expressed as a product:
 
@@ -312,7 +320,8 @@ class Var:
     \begin{frame}[fragile]
         \frametitle{Gradients in PyTorch}
 
-        Suppose we have a scalar-valued vector function, $f: \mathbb{R}^{n}\times\mathbb{R}^{n}\rightarrow\mathbb{R}$:
+        Suppose we have a scalar-valued vector function, $f: \mathbb{R}^{n}\times\mathbb{R}^{n}\rightarrow\mathbb{R}$.
+        \texttt{grad} is a function that takes $f$ and a tuple of input variables, and returns their gradients as a tuple.
 
         \noindent\rule{\textwidth}{0.5pt}
 
@@ -385,7 +394,7 @@ tensor([[3., 0., 0.],
     \end{frame}
 
     \begin{frame}
-        \frametitle{Higher order and higher rank AD}
+        \frametitle{Higher-order and higher-rank AD}
 
         The \textit{Hessian} $\mathbf{H}:(\mathbb{R}^m\rightarrow\mathbb{R})\rightarrow\mathbb{R}^{m\times m}$ maps scalar functions to $\partial^2$:
 
@@ -596,5 +605,44 @@ are at the same position from the right
         \end{lstlisting}
     \end{frame}
 
+    \begin{frame}
+        \frametitle{Tips for Parallelism: Vectorization}
+        \begin{itemize}
+            \item Stateful computation extremely difficult to parallelize
+            \item Sequentiality is the essence of parallelism
+            \item If necessary to use CPU, use \texttt{torch.multiprocessing}
+            \item Use vectorization where possible, e.g. \texttt{vmap}, \texttt{pmap}
+        \end{itemize}
+    \end{frame}
 
+    \begin{frame}[fragile]
+        \frametitle{Parallelism Tips: Loading data incrementally}
+        \begin{itemize}
+            \item Loading the entire dataset into memory generally undesirable
+            \item Start by timing. How long does it take to load a batch?
+            \item Need to keep the GPU busy to maximize throughput
+            \item When in doubt, check utilization \texttt{nvidia-smi}, \texttt{nvtop}
+        \end{itemize}
+
+\begin{lstlisting}[language=Python, escapeinside={<@}{@>}]
+X, Y = torch.load('training.pt')           <@\textcolor{red}\xmark@>
+\end{lstlisting}
+    \noindent\rule{\textwidth}{0.5pt}
+
+\begin{lstlisting}[language=Python, escapeinside={<@}{@>}]
+ts = Dataset(partition['train'], labels)
+tg = torch.utils.data.DataLoader(ts, ...)  <@\textcolor{green}\cmark@>
+\end{lstlisting}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{References}
+        \begin{itemize}
+            \item \href{https://pytorch.org/docs/master/generated/torch.vmap.html}{\texttt{torch.vmap} documentation}
+            \item \href{https://namedtensor.github.io/}{Named Tensor Notation}
+            \item \href{https://pytorch.org/tutorials/intermediate/named_tensor_tutorial.html}{Introduction to Named Tensors in PyTorch}
+            \item \href{https://pytorch.org/tutorials/beginner/data_loading_tutorial.html}{PyTorch Data Loading Tutorial}
+            \item \href{https://pytorch.org/tutorials/intermediate/model_parallel_tutorial.html}{Model parallel best practices}
+        \end{itemize}
+    \end{frame}
 \end{document}

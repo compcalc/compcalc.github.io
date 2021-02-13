@@ -27,11 +27,13 @@ A few recent papers on differential, integral and logical calculi are listed for
 
 Differentiable programming concerns the calculus of infinitesimal change and change propagation through a computation graph. This subject is the original and primary focus of this reading group.
 
-* [PyTorch: An Imperative Style, High-Performance Deep Learning Library](https://papers.nips.cc/paper/2019/file/bdbca288fee7f92f2bfa9f7012727740-Paper.pdf), Paszke et al. (2019)
+* [∂ is for Dialectica: Typing Differentiable Programming](https://hal.archives-ouvertes.fr/hal-03123968/document), Kerjean and Pédrot (2021)
 * [λ<sub>S</sub>: Computable semantics for differentiable programming](https://arxiv.org/pdf/2007.08017.pdf), Sherman et al. (2020)
 * [Instead of Rewriting Foreign Code for Machine Learning, Automatically Synthesize Fast Gradients](https://arxiv.org/pdf/2010.01709.pdf), Moses and Churavy (2020)
 * [Differentiable Weighted Finite-State Transducers](https://arxiv.org/pdf/2010.01003.pdf), Hannun et al. (2020)
 * [Differentiate Everything with a Reversible Domain-Specific Language](https://arxiv.org/pdf/2003.04617.pdf), Liu and Zhao (2020)
+* [The Differentiable Curry](https://openreview.net/pdf?id=ryxuz9SzDB), Abadi et al. (2019)
+* [PyTorch: An Imperative Style, High-Performance Deep Learning Library](https://papers.nips.cc/paper/2019/file/bdbca288fee7f92f2bfa9f7012727740-Paper.pdf), Paszke et al. (2019)
 * [The Simple Essence of Automatic Differentiation](https://arxiv.org/pdf/1804.00746.pdf), Elliott (2018)
 * [Automatic differentiation in ML: Where we are and where we should be going](https://arxiv.org/pdf/1810.11530.pdf), Merriënboer et al. (2018)
 * [Automatic differentiation in machine learning: a survey](https://www.jmlr.org/papers/volume18/17-468/17-468.pdf), Baydin et al. (2017)
@@ -40,12 +42,15 @@ Differentiable programming concerns the calculus of infinitesimal change and cha
 
 We will also discuss some topics in automatic integration or probabilistic programming, i.e. the study of volume, density and how to derive their exact or approximate quantity.
 
+* [Probabilistic Programming Semantics for Name Generation](https://dl.acm.org/doi/pdf/10.1145/3434292), Sabok et al. (2021)
 * [Quantitative Equational Reasoning](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/4B76BCCD4D6A3A37459C35ED2CE5FF93/9781108488518c10_333-360.pdf/quantitative_equational_reasoning.pdf), Bacci, Mardare, Panangaden, and Plotkin (2020)
 * [miniKanren as a Tool for Symbolic Computation in Python](https://arxiv.org/pdf/2005.11644.pdf), Willard (2020)
 * [Probabilistic Circuits: A Unifying Framework for Tractable Probabilistic Models](http://starai.cs.ucla.edu/papers/ProbCirc20.pdf), Choi et al. (2020)
 * [Probabilistic Programming with CuPPL](https://arxiv.org/pdf/2010.08454.pdf), Collins and Grover (2020)
 * [Automatic Reparameterisation of Probabilistic Programs](https://arxiv.org/pdf/1906.03028.pdf), Gorinova et al. (2019)
 * [Deep Learning for Symbolic Mathematics](https://arxiv.org/pdf/1912.01412.pdf), Lample and Charton (2019)
+* [Exact Bayesian inference by symbolic disintegration](https://dl.acm.org/doi/abs/10.1145/3009837.3009852), Shan and Ramsey (2017)
+* [Simplifying Probabilistic ProgramsUsing Computer Algebra](http://homes.sice.indiana.edu/ccshan/rational/simplify.pdf), Carette and Shan (2016)
 * [Augur: Data-Parallel Probabilistic Modeling](https://papers.nips.cc/paper/2014/file/cf9a242b70f45317ffd281241fa66502-Paper.pdf), Tristan et al. (2014)
 
 #### Books
@@ -61,5 +66,6 @@ Finally, we plan to discuss some related topics in other logical calculi, includ
 * [Lecture Notes on the Lambda Calculus](https://www.irif.fr/~mellies/mpri/mpri-ens/biblio/Selinger-Lambda-Calculus-Notes.pdf), Selinger (2013)
 * [The differential lambda-calculus](https://core.ac.uk/download/pdf/82396223.pdf), Ehrhard and Regnier (2001)
 * [A general definition of dependent type theories](https://arxiv.org/pdf/2009.05539.pdf), Bauer (2020)
+* [Inductive Types Deconstructed: The Calculus of United Constructions](https://dl.acm.org/doi/abs/10.1145/3331554.3342607), Monnier (2019)
 * [Binary Lambda Calculus and Combinatory Logic](https://drops.dagstuhl.de/opus/volltexte/2006/628/pdf/06051.TrompJohn.Paper.628.pdf), Tromp (2006)
 * [The SKI Combinator Calculus, a universal formal system](http://people.cs.uchicago.edu/~odonnell/Teacher/Lectures/Formal_Organization_of_Knowledge/Examples/combinator_calculus.texpdf.pdf), O'Donnell

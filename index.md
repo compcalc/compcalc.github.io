@@ -17,7 +17,10 @@ Calculus is a broad subject with a variety of applications in classical and stat
 | Mar. 5, TBD       | TBD                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | TBD                |
 | Mar. 12, 11:00 am | [Drasil: Generate all the Things!](https://github.com/JacquesCarette/Drasil)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Jacques Carette    |
 
-If you would like to sign up to present or wish to receive an invitation to join the reading group, please reach out to the organizer by electronic mail using the following address: bre at ndan dot co.
+If you would like to sign up to present or wish to receive an invitation
+to join the reading group, please reach out to the organizer by
+electronic mail using the following address: `breandan dot considine at
+mail dot mcgill dot ca`.
 
 ## Reading Materials
 
@@ -31,7 +34,12 @@ Differentiable programming concerns the calculus of infinitesimal change and cha
 * [λ<sub>S</sub>: Computable semantics for differentiable programming](https://arxiv.org/pdf/2007.08017.pdf), Sherman et al. (2020)
 * [Instead of Rewriting Foreign Code for Machine Learning, Automatically Synthesize Fast Gradients](https://arxiv.org/pdf/2010.01709.pdf), Moses and Churavy (2020)
 * [Differentiable Weighted Finite-State Transducers](https://arxiv.org/pdf/2010.01003.pdf), Hannun et al. (2020)
-* [Differentiate Everything with a Reversible Domain-Specific Language](https://arxiv.org/pdf/2003.04617.pdf), Liu and Zhao (2020)
+* [A simple and efficient tensor calculus](https://ojs.aaai.org/index.php/AAAI/article/view/5881/5737),
+  Laue et al. (2020)
+* [Differentiate Everything with a Reversible Domain-Specific Language](https://arxiv.org/pdf/2003.04617.pdf),
+  Liu and Zhao (2020)
+* [Gradient Descent: The Ultimate Optimizer](https://arxiv.org/pdf/1909.13371.pdf),
+  Chandra et al. (2019)
 * [The Differentiable Curry](https://openreview.net/pdf?id=ryxuz9SzDB), Abadi et al. (2019)
 * [PyTorch: An Imperative Style, High-Performance Deep Learning Library](https://papers.nips.cc/paper/2019/file/bdbca288fee7f92f2bfa9f7012727740-Paper.pdf), Paszke et al. (2019)
 * [The Simple Essence of Automatic Differentiation](https://arxiv.org/pdf/1804.00746.pdf), Elliott (2018)
@@ -44,14 +52,25 @@ We will also discuss some topics in automatic integration or probabilistic progr
 
 * [Probabilistic Programming Semantics for Name Generation](https://dl.acm.org/doi/pdf/10.1145/3434292), Sabok et al. (2021)
 * [Quantitative Equational Reasoning](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/4B76BCCD4D6A3A37459C35ED2CE5FF93/9781108488518c10_333-360.pdf/quantitative_equational_reasoning.pdf), Bacci, Mardare, Panangaden, and Plotkin (2020)
+* [Bean Machine: A Declarative Probabilistic Programming Language For Efficient Programmable Inference](http://proceedings.mlr.press/v138/tehrani20a/tehrani20a.pdf),
+  Tehrani et al. (2020)
 * [miniKanren as a Tool for Symbolic Computation in Python](https://arxiv.org/pdf/2005.11644.pdf), Willard (2020)
+* [PPL Bench: Evaluation Framework For Probabilistic Programming Languages](https://arxiv.org/pdf/2010.08886.pdf),
+  Kulkarni et al. (2020)
 * [Probabilistic Circuits: A Unifying Framework for Tractable Probabilistic Models](http://starai.cs.ucla.edu/papers/ProbCirc20.pdf), Choi et al. (2020)
 * [Probabilistic Programming with CuPPL](https://arxiv.org/pdf/2010.08454.pdf), Collins and Grover (2020)
 * [Automatic Reparameterisation of Probabilistic Programs](https://arxiv.org/pdf/1906.03028.pdf), Gorinova et al. (2019)
+* [A domain theory for statistical probabilistic programming](https://dl.acm.org/doi/pdf/10.1145/3290349),
+  Vákár et al. (2019)
 * [Deep Learning for Symbolic Mathematics](https://arxiv.org/pdf/1912.01412.pdf), Lample and Charton (2019)
 * [Exact Bayesian inference by symbolic disintegration](https://dl.acm.org/doi/abs/10.1145/3009837.3009852), Shan and Ramsey (2017)
 * [Simplifying Probabilistic Programs Using Computer Algebra](http://homes.sice.indiana.edu/ccshan/rational/simplify.pdf), Carette and Shan (2016)
 * [Augur: Data-Parallel Probabilistic Modeling](https://papers.nips.cc/paper/2014/file/cf9a242b70f45317ffd281241fa66502-Paper.pdf), Tristan et al. (2014)
+
+#### Presentations
+
+* [Sémantiques des Calculs Distribués, Différentiels et Probabilistes](https://www.irif.fr/~tasson/doc/recherche/18_HDR_presentation.pdf),
+  Tasson (2018)
 
 #### Books
 

@@ -2,7 +2,18 @@
 >
 > - Alonzo Church (1941), [The Calculi of Lambda Conversion](http://www.cap-lore.com/Languages/lambda/math/Alonzo/book.html)
 
-Calculus is a broad subject with a variety of applications in classical and statistical computing. Broadly, it encompasses any formal system for manipulating symbolic expressions according to a fixed set of rules. We are specifically interested in its applications to programming. Each week, we will read one or two related papers and hold a short discussion. All are welcome to attend.
+In ancient times, our ancestors used small pebbles to encode and
+manipulate abstract quantities according to a set of mechanical rules.
+In effect, they were trading mental for physical labor. With the advent
+of pen and paper, those same rules could be translated into written
+symbols and more recently, electrical impulses and transistors.
+
+Modern calculus is a topic with a variety of applications in classical
+and statistical computing. Broadly, it encompasses any formal system for
+manipulating symbolic expressions according to a fixed set of rules. We
+are specifically interested in its applications to computer programming.
+Each week, we will read a paper and hold a short discussion. All are
+welcome to attend.
 
 ## Schedule
 

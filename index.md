@@ -3,10 +3,16 @@
 > - Alonzo Church (1941), [The Calculi of Lambda Conversion](http://www.cap-lore.com/Languages/lambda/math/Alonzo/book.html)
 
 In ancient times, our ancestors used small pebbles to encode and
-manipulate abstract quantities according to a set of mechanical rules.
-In effect, they were trading mental for physical labor. With the advent
+manipulate abstract quantities according to a small set of rules. In
+effect, they were trading mental for mechanical labor. With the advent
 of pen and paper, those same rules could be translated into written
 symbols and more recently, electrical impulses and transistors.
+
+Today we make the same trade when implementing mathematical algorithms:
+one can either spend a great deal of effort rewriting an expression with
+pen and paper then implementing the result as a computer program, or, we
+could implement the rules, then let the computer rewrite the expression
+on our behalf. We call this exchange *calculus*.
 
 Modern calculus is a topic with a variety of applications in classical
 and statistical computing. Broadly, it encompasses any formal system for
@@ -35,10 +41,9 @@ welcome to attend.
 | Apr. 23, TBD      | Available                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Available                                                                    |
 | Apr. 30, TBD      | Available                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Available                                                                    |
 
-If you would like to sign up to present or wish to receive an invitation
-to join the reading group, please reach out to the organizer by
-electronic mail using the following address: `breandan dot considine at
-mail dot mcgill dot ca`.
+If you would like to sign up to present or wish to receive updates from
+the mailing list, please reach out to the organizer via the following
+address: `breandan dot considine at mail dot mcgill dot ca`.
 
 ## Reading Materials
 
@@ -99,10 +104,10 @@ We will also discuss some topics in automatic integration or probabilistic progr
 
 Finally, we plan to discuss some related topics in other logical calculi, including combinatory logic, sequent calculus and other formal systems. This material will be primarily introductory and no prior experience is expected or required.
 
-* [Constructive Mathematics and Computer Programming](https://www.cs.tufts.edu/~nr/cs257/archive/per-martin-lof/constructive-math.pdf), Per Martin-Löf (1976)
-* [Lecture Notes on the Lambda Calculus](https://www.irif.fr/~mellies/mpri/mpri-ens/biblio/Selinger-Lambda-Calculus-Notes.pdf), Selinger (2013)
-* [The differential lambda-calculus](https://core.ac.uk/download/pdf/82396223.pdf), Ehrhard and Regnier (2001)
 * [A general definition of dependent type theories](https://arxiv.org/pdf/2009.05539.pdf), Bauer (2020)
 * [Inductive Types Deconstructed: The Calculus of United Constructions](https://dl.acm.org/doi/abs/10.1145/3331554.3342607), Monnier (2019)
+* [Lecture Notes on the Lambda Calculus](https://www.irif.fr/~mellies/mpri/mpri-ens/biblio/Selinger-Lambda-Calculus-Notes.pdf), Selinger (2013)
 * [Binary Lambda Calculus and Combinatory Logic](https://drops.dagstuhl.de/opus/volltexte/2006/628/pdf/06051.TrompJohn.Paper.628.pdf), Tromp (2006)
+* [The differential lambda-calculus](https://core.ac.uk/download/pdf/82396223.pdf), Ehrhard and Regnier (2001)
 * [The SKI Combinator Calculus, a universal formal system](http://people.cs.uchicago.edu/~odonnell/Teacher/Lectures/Formal_Organization_of_Knowledge/Examples/combinator_calculus.texpdf.pdf), O'Donnell
+* [Constructive Mathematics and Computer Programming](https://www.cs.tufts.edu/~nr/cs257/archive/per-martin-lof/constructive-math.pdf), Per Martin-Löf (1976)

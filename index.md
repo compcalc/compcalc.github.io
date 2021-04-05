@@ -53,6 +53,9 @@ A few recent papers on differential, integral and logical calculi are listed for
 
 Differentiable programming concerns the calculus of infinitesimal change and change propagation through a computation graph. This subject is the original and primary focus of this reading group.
 
+* [CHAD: Combinatory Homomorphic Automatic Differentiation](https://arxiv.org/pdf/2103.15776.pdf), Vakar (2021)
+* [Symbolic and Automatic Differentiation of Languages](http://conal.net/papers/language-derivatives/paper.pdf), Elliott (2021)
+* [Swift for TensorFlow: A portable, flexible platform for deep learning](https://arxiv.org/pdf/2102.13243.pdf), Saeta et al. (2021)
 * [∂ is for Dialectica: Typing Differentiable Programming](https://hal.archives-ouvertes.fr/hal-03123968/document), Kerjean and Pédrot (2021)
 * [λ<sub>S</sub>: Computable semantics for differentiable programming](https://arxiv.org/pdf/2007.08017.pdf), Sherman et al. (2020)
 * [Instead of Rewriting Foreign Code for Machine Learning, Automatically Synthesize Fast Gradients](https://arxiv.org/pdf/2010.01709.pdf), Moses and Churavy (2020)

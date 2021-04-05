@@ -114,3 +114,4 @@ Finally, we plan to discuss some related topics in other logical calculi, includ
 * [The differential lambda-calculus](https://core.ac.uk/download/pdf/82396223.pdf), Ehrhard and Regnier (2001)
 * [The SKI Combinator Calculus, a universal formal system](http://people.cs.uchicago.edu/~odonnell/Teacher/Lectures/Formal_Organization_of_Knowledge/Examples/combinator_calculus.texpdf.pdf), O'Donnell
 * [Constructive Mathematics and Computer Programming](https://www.cs.tufts.edu/~nr/cs257/archive/per-martin-lof/constructive-math.pdf), Per Martin-Löf (1976)
+* [On the building blocks of mathematical logic](https://writings.stephenwolfram.com/data/uploads/2020/12/Schonfinkel-OnTheBuildingBlocksOfMathematicalLogic.pdf), Schönfinkel (1924)

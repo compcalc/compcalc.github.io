@@ -1,6 +1,6 @@
 > "The derivative, as this notion appears in the elementary differential calculus, is a familiar mathematical example of a function for which both [the domain and the range] consist of functions. Or, turning to the integral calculus, if in the expression <img src="https://render.githubusercontent.com/render/math?math=\int^{1}_0(f x)dx"> we take the function <img src="https://render.githubusercontent.com/render/math?math=f"> as independent variable, we are led to a function for which the range of arguments consists of functions and the range of values, of numbers."
 >
-> - Alonzo Church (1941), [The Calculi of Lambda Conversion](http://www.cap-lore.com/Languages/lambda/math/Alonzo/book.html)
+> - Alonzo Church (1941), [The Calculi of Lambda Conversion](/public/church/church_calculi_1941.pdf#page=9)
 
 In ancient times, our ancestors used small pebbles to encode and
 manipulate abstract quantities according to a small set of rules. In

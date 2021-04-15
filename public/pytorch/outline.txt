@@ -1,0 +1,30 @@
+AD: Tape-based, graph-based and operator overloading
+    - What is automatic differentiation? (AD)
+    - PyTorch vs. TensorFlow, Theano et al.
+    - Static vs. Dynamic graphs
+    - What is a differentiable program?
+    - Differentiable programming with PyTorch
+    - torch.autograd / forward propagation / backward
+    - Custom derivatives and implicit function differentiation
+
+Shape, named tensors and tensor manipulation
+    - What is a type signature?
+    - Matrix-multiplication and tensor contraction
+    - Names vs. indices
+
+Stateful vs. stateless computation
+    - Data loading, and data parallelism
+    - Composable transformations
+    - Synchronizing access to shared resources
+    - Aysynchronous gradient descent?
+    - Model Parallelism and multi-GPU environments
+
+Intermediate representations / JIT compilation / TorchScript
+    - Debugging, tracing and interpreting the Torch graph
+    - What runs in the Python interpreter and what runs in the JIT?
+    - Measuring throughput and bottlenecks
+    - Intermediate language
+
+PyTorch distributions and stochasticity
+    - Reproducibility and determinism
+    - Differentiable density estimators

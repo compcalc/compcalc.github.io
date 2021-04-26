@@ -76,11 +76,13 @@ We will also discuss some topics in automatic integration or probabilistic progr
 
 * [Probabilistic Programming Semantics for Name Generation](https://dl.acm.org/doi/pdf/10.1145/3434292), Sabok et al. (2021)
 * [Quantitative Equational Reasoning](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/4B76BCCD4D6A3A37459C35ED2CE5FF93/9781108488518c10_333-360.pdf/quantitative_equational_reasoning.pdf), Bacci, Mardare, Panangaden, and Plotkin (2020)
+* [Dice: Compiling Discrete Probabilistic Programs for Scalable Inference](https://arxiv.org/pdf/2005.09089v3.pdf), Holtzen (2020)
 * [Bean Machine: A Declarative Probabilistic Programming Language For Efficient Programmable Inference](http://proceedings.mlr.press/v138/tehrani20a/tehrani20a.pdf), Tehrani et al. (2020)
 * [miniKanren as a Tool for Symbolic Computation in Python](https://arxiv.org/pdf/2005.11644.pdf), Willard (2020)
 * [PPL Bench: Evaluation Framework For Probabilistic Programming Languages](https://arxiv.org/pdf/2010.08886.pdf), Kulkarni et al. (2020)
 * [Probabilistic Circuits: A Unifying Framework for Tractable Probabilistic Models](http://starai.cs.ucla.edu/papers/ProbCirc20.pdf), Choi et al. (2020)
 * [Probabilistic Programming with CuPPL](https://arxiv.org/pdf/2010.08454.pdf), Collins and Grover (2020)
+* [Symbolic Exact Inference for Discrete Probabilistic Programs](https://arxiv.org/pdf/1904.02079.pdf), Holtzen (2019)
 * [Automatic Reparameterisation of Probabilistic Programs](https://arxiv.org/pdf/1906.03028.pdf), Gorinova et al. (2019)
 * [A domain theory for statistical probabilistic programming](https://dl.acm.org/doi/pdf/10.1145/3290349), Vákár et al. (2019)
 * [Deep Learning for Symbolic Mathematics](https://arxiv.org/pdf/1912.01412.pdf), Lample and Charton (2019)

@@ -106,9 +106,13 @@ Finally, we plan to discuss some related topics in other logical calculi, includ
 
 * [A general definition of dependent type theories](https://arxiv.org/pdf/2009.05539.pdf), Bauer (2020)
 * [Inductive Types Deconstructed: The Calculus of United Constructions](https://dl.acm.org/doi/abs/10.1145/3331554.3342607), Monnier (2019)
+* [Introduction to the Calculus of Inductive Constructions](https://hal.inria.fr/hal-01094195/file/CIC.pdf), Paulin-Mohring (2014)
 * [Lecture Notes on the Lambda Calculus](https://www.irif.fr/~mellies/mpri/mpri-ens/biblio/Selinger-Lambda-Calculus-Notes.pdf), Selinger (2013)
 * [Binary Lambda Calculus and Combinatory Logic](https://drops.dagstuhl.de/opus/volltexte/2006/628/pdf/06051.TrompJohn.Paper.628.pdf), Tromp (2006)
+* [An introduction to the π-calculus](http://cs.rpi.edu/academics/courses/spring03/dci/picalculus.pdf), Parrow (2001)
 * [The differential lambda-calculus](https://core.ac.uk/download/pdf/82396223.pdf), Ehrhard and Regnier (2001)
 * [The SKI Combinator Calculus, a universal formal system](http://people.cs.uchicago.edu/~odonnell/Teacher/Lectures/Formal_Organization_of_Knowledge/Examples/combinator_calculus.texpdf.pdf), O'Donnell
+* [Lambda calculi with types](https://repository.ubn.ru.nl/bitstream/handle/2066/17231/17231.pdf), Barendregt (1992)
+* [The calculus of constructions](https://hal.inria.fr/inria-00076024/document), Coquand and Huet (1986)
 * [Constructive Mathematics and Computer Programming](https://www.cs.tufts.edu/~nr/cs257/archive/per-martin-lof/constructive-math.pdf), Per Martin-Löf (1976)
 * [On the building blocks of mathematical logic](https://writings.stephenwolfram.com/data/uploads/2020/12/Schonfinkel-OnTheBuildingBlocksOfMathematicalLogic.pdf), Schönfinkel (1924)

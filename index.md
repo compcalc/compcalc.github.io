@@ -75,7 +75,9 @@ Differentiable programming concerns the calculus of infinitesimal change and cha
 
 We will also discuss some topics in automatic integration or probabilistic programming, i.e. the study of volume, density and how to derive their exact or approximate quantity.
 
+* [Exact Symbolic Inference in Probabilistic Programs via Sum-Product Representations](https://arxiv.org/pdf/2010.03485v1.pdf), Saad et al. (2021)
 * [Probabilistic Programming Semantics for Name Generation](https://dl.acm.org/doi/pdf/10.1145/3434292), Sabok et al. (2021)
+* [Torch-Struct: Deep Structured Prediction Library](https://arxiv.org/pdf/2002.00876.pdf), Rush (2020)
 * [Quantitative Equational Reasoning](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/4B76BCCD4D6A3A37459C35ED2CE5FF93/9781108488518c10_333-360.pdf/quantitative_equational_reasoning.pdf), Bacci, Mardare, Panangaden, and Plotkin (2020)
 * [Dice: Compiling Discrete Probabilistic Programs for Scalable Inference](https://arxiv.org/pdf/2005.09089v3.pdf), Holtzen et al. (2020)
 * [Bean Machine: A Declarative Probabilistic Programming Language For Efficient Programmable Inference](http://proceedings.mlr.press/v138/tehrani20a/tehrani20a.pdf), Tehrani et al. (2020)

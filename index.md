@@ -126,4 +126,4 @@ Finally, we plan to discuss some related topics in other logical calculi, includ
 #### Books
 
 * [Analysis of Boolean Functions](https://arxiv.org/pdf/2105.10386.pdf), O'Donnell (2021)
-* [Program || Proof](http://www.lix.polytechnique.fr/Labo/Samuel.Mimram/teaching/INF551/course.pdf), Samuel Mimram (2020)
+* [Program ǁ Proof](http://www.lix.polytechnique.fr/Labo/Samuel.Mimram/teaching/INF551/course.pdf), Samuel Mimram (2020)

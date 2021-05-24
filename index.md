@@ -112,6 +112,7 @@ Finally, we plan to discuss some related topics in other logical calculi, includ
 * [Introduction to the Calculus of Inductive Constructions](https://hal.inria.fr/hal-01094195/file/CIC.pdf), Paulin-Mohring (2014)
 * [Lecture Notes on the Lambda Calculus](https://www.irif.fr/~mellies/mpri/mpri-ens/biblio/Selinger-Lambda-Calculus-Notes.pdf), Selinger (2013)
 * [Binary Lambda Calculus and Combinatory Logic](https://drops.dagstuhl.de/opus/volltexte/2006/628/pdf/06051.TrompJohn.Paper.628.pdf), Tromp (2006)
+* [Intuitionistic Logic](https://www2.mathematik.tu-darmstadt.de/~buchholtz/80-518-818/vanDalen-2001.pdf), Van Dalen (2001)
 * [An introduction to the π-calculus](http://cs.rpi.edu/academics/courses/spring03/dci/picalculus.pdf), Parrow (2001)
 * [The differential lambda-calculus](https://core.ac.uk/download/pdf/82396223.pdf), Ehrhard and Regnier (2001)
 * [Family Polymorphism](https://link.springer.com/content/pdf/10.1007/3-540-45337-7_17.pdf), Ernst (2001)
@@ -119,4 +120,10 @@ Finally, we plan to discuss some related topics in other logical calculi, includ
 * [Lambda calculi with types](https://repository.ubn.ru.nl/bitstream/handle/2066/17231/17231.pdf), Barendregt (1992)
 * [The calculus of constructions](https://hal.inria.fr/inria-00076024/document), Coquand and Huet (1986)
 * [Constructive Mathematics and Computer Programming](https://www.cs.tufts.edu/~nr/cs257/archive/per-martin-lof/constructive-math.pdf), Per Martin-Löf (1976)
+* [On the Interpretation of Intuitionistic Logic](https://homepages.inf.ed.ac.uk/jmckinna/kolmogorov-1932.pdf), Kolmogorov (1932)
 * [On the building blocks of mathematical logic](https://writings.stephenwolfram.com/data/uploads/2020/12/Schonfinkel-OnTheBuildingBlocksOfMathematicalLogic.pdf), Schönfinkel (1924)
+
+#### Books
+
+* [Analysis of Boolean Functions](https://arxiv.org/pdf/2105.10386.pdf), O'Donnell (2021)
+* [Program || Proof](http://www.lix.polytechnique.fr/Labo/Samuel.Mimram/teaching/INF551/course.pdf), Samuel Mimram (2020)

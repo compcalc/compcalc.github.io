@@ -1,0 +1,108 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2021
+
+% ready for submission
+\usepackage{workshop}
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2021}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2021}
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2021}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+
+\title{Parallels in Automatic and Inductive Programming}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+\author{%
+    David S.~Hippocampus\thanks{Use footnote for providing further information
+    about author (webpage, alternative address)---\emph{not} for acknowledging
+    funding agencies.} \\
+    Department of Computer Science\\
+    Cranberry-Lemon University\\
+    Pittsburgh, PA 15213 \\
+    \texttt{hippo@cs.cranberry-lemon.edu} \\
+% examples of more authors
+% \And
+% Coauthor \\
+% Affiliation \\
+% Address \\
+% \texttt{email} \\
+% \AND
+% Coauthor \\
+% Affiliation \\
+% Address \\
+% \texttt{email} \\
+% \And
+% Coauthor \\
+% Affiliation \\
+% Address \\
+% \texttt{email} \\
+% \And
+% Coauthor \\
+% Affiliation \\
+% Address \\
+% \texttt{email} \\
+}
+
+\begin{document}
+
+    \maketitle
+
+    \begin{abstract}
+        The development of practical libraries for automatic differentiation has enabled rapid progress in gradient-based learning over the last decade. Other forms of automatic programming now emerging in the statistical learning and programming language communities hold the promise of unleashing similar progress in nearby fields, from probabilistic to classical logic. Concurrently, machine learners have made steady progress in representing and synthesizing programs. Other workshops have explored these topics separately, yet few have highlighted the interplay between of automatic and inductive programming, a situation we hope to change.
+    \end{abstract}
+
+    \section{Introduction}
+
+    Neural information processing systems have benefited tremendously from the development of libraries and frameworks for automatic differentiation. Recent work has begun to develop similar frameworks for automating probabilistic inference and other domain specific languages for data processing.
+
+    Not only does machine learning benefit from tools and languages for programmable inference, learning can also be seen as a kind of programming language in its own right, based on its own code and data and which is now being used to generate self-similar code and data. Using techniques from programmable inference to generate programs, and using insights learned by developing those programs to drive innovation in AD and probabilistic programming is a virtuous cycle.
+
+    Many ideas are being reinvented and rediscovered\ldots (AD was invented at least half a dozen times.)
+
+    The duality between code and data for instance is well-known in PL under the guise of homoiconicity. Many other topics that machine learners are just encountering have been well-studied in the programming language community. Programming language designers have thought deeply about higher-order functions, currying and rewriting, and operational and denotational semantics, which enables APIs to compose well and work correctly.
+
+    Similarly, programming language theory has long wrestled with issues of intensional and extensional representation, expressivity and performance, a distinction which has long since been reconciled by the statistical learning community under the umbrella of model-based learning and approximation theory. Other areas where the interaction could be fruitful are tools for equivalence, proof search and metrics. New language models could enable natural langauge and assitive programming.
+
+    As outlined above, we believe that recent advances in statistical learning and programming languages have been largely siloed and these communities have much to learn from each other. Exchanging ideas between these two communities could lead to other unrealized insights. Our workshop is designed to be as inclusive as possible. We include the following non-exhaustive list of topics:
+
+    \begin{itemize}
+      \item Differentiable programming / automatic differentiation
+      \item Probabilistic programming / statistical inference
+      \item Declarative programming / constraint programming
+      \item Dynamic programming / reinforcement learning
+      \item Functional programming / $\lambda$-calculus
+      \item Array programming / linear algebra
+      \item Semiring programming / message passing
+      \item Metaprogramming / reflection
+      \item Logic programming / proof search
+      \item Domain-specific languages
+    \end{itemize}
+
+    We also encourage developers of libraries and frameworks to submit their work for evaluation.
+
+\end{document}

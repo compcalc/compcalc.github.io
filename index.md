@@ -54,6 +54,7 @@ A few recent papers on differential, integral and logical calculi are listed for
 Differentiable programming concerns the calculus of infinitesimal change and change propagation through a computation graph. This subject is the original and primary focus of this reading group.
 
 * [Getting to the Point. Index Sets and Parallelism-Preserving Autodiff for Pointful Array Programming](https://arxiv.org/pdf/2104.05372.pdf), Paszke et al. (2021)
+* [Categorical Foundations of Gradient-Based Learning](https://arxiv.org/pdf/2103.01931.pdf), Cruttwell et al. (2021)
 * [Learners' languages](https://arxiv.org/abs/2103.01189), Spivak (2021)
 * [CHAD: Combinatory Homomorphic Automatic Differentiation](https://arxiv.org/pdf/2103.15776.pdf), Vakar (2021)
 * [Symbolic and Automatic Differentiation of Languages](http://conal.net/papers/language-derivatives/paper.pdf), Elliott (2021)

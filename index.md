@@ -121,6 +121,7 @@ Finally, we plan to discuss some related topics in other logical calculi, includ
 * [Lambda calculi with types](https://repository.ubn.ru.nl/bitstream/handle/2066/17231/17231.pdf), Barendregt (1992)
 * [The calculus of constructions](https://hal.inria.fr/inria-00076024/document), Coquand and Huet (1986)
 * [Constructive Mathematics and Computer Programming](https://www.cs.tufts.edu/~nr/cs257/archive/per-martin-lof/constructive-math.pdf), Per Martin-Löf (1976)
+* [A logical calculus of the ideas immanent in nervous activity](https://www.cs.cmu.edu/~./epxing/Class/10715/reading/McCulloch.and.Pitts.pdf), McCulloch and Pitts (1943)
 * [On the Interpretation of Intuitionistic Logic](https://homepages.inf.ed.ac.uk/jmckinna/kolmogorov-1932.pdf), Kolmogorov (1932)
 * [On the building blocks of mathematical logic](https://writings.stephenwolfram.com/data/uploads/2020/12/Schonfinkel-OnTheBuildingBlocksOfMathematicalLogic.pdf), Schönfinkel (1924)
 

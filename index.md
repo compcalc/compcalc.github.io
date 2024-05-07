@@ -1,17 +1,5 @@
 ### News: If you enjoyed COMPCALC, be sure to check out [AIPLANS](https://aiplans.github.io/), a new workshop at NeurIPS '21!
 
-<script type="text/javascript" id="MathJax-script" async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-</script>
-<script>
-  MathJax = {
-    tex: {
-      inlineMath: [['$', '$']]
-    }
-  };
-</script>
-
-
 > "The derivative, as this notion appears in the elementary differential calculus, is a familiar mathematical example of a function for which both [the domain and the range] consist of functions. Or, turning to the integral calculus, if in the expression $\int^{1}_0(f x)dx$ we take the function $f$ as independent variable, we are led to a function for which the range of arguments consists of functions and the range of values, of numbers."
 >
 > - Alonzo Church (1941), [The Calculi of Lambda Conversion](/public/church/church_calculi_1941.pdf#page=9)
@@ -145,3 +133,5 @@ Finally, we plan to discuss some related topics in other logical calculi, includ
 
 * [Analysis of Boolean Functions](https://arxiv.org/pdf/2105.10386.pdf), O'Donnell (2021)
 * [Program ǁ Proof](http://www.lix.polytechnique.fr/Labo/Samuel.Mimram/teaching/INF551/course.pdf), Samuel Mimram (2020)
+
+<script type="text/javascript" id="MathJax-script" async   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"> </script> <script>   MathJax = {     tex: {       inlineMath: [['$', '$']]     }   }; </script>
